@@ -480,6 +480,29 @@
   .seg-tab{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
   .seg-tab button{font-family:inherit;font-size:12.5px;font-weight:700;padding:7px 14px;border-radius:20px;border:1px solid var(--line);background:#fff;cursor:pointer;color:var(--muted)}
   .seg-tab button.active{background:var(--green);color:#fff;border-color:var(--green)}
+  /* ===== Dòng tiền theo tuần (nâng cấp) ===== */
+  .cwtable{width:100%;border-collapse:collapse;font-size:12px}
+  .cwtable th{background:var(--navy);color:#fff;padding:6px 8px;font-size:10.5px;text-align:right;white-space:nowrap}
+  .cwtable th:first-child,.cwtable th:nth-child(2){text-align:left}
+  .cwtable td{padding:5px 8px;border-bottom:1px solid #f1f5f9;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;cursor:pointer}
+  .cwtable td:first-child,.cwtable td:nth-child(2){text-align:left}
+  .cwtable tr.th-row td{background:#f2faf5}
+  .cwtable tr.selweek td{background:#e0edff!important}
+  .cwtable tr:hover td{background:#f8fafc}
+  .cwtable .neg{color:var(--red);font-weight:800}
+  .cwtable .dim{color:#94a3b8}
+  .cdet-row{display:grid;grid-template-columns:150px 1fr 74px;gap:8px;align-items:center;margin-bottom:6px;font-size:12px}
+  .cdet-row .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cdet-row .tr2{height:9px;background:#f1f5f9;border-radius:5px;overflow:hidden}
+  .cdet-row .tr2 i{display:block;height:100%;border-radius:5px}
+  .cdet-row .vv{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+  .cdet-h{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin:12px 0 7px}
+  /* ===== Gantt cha–con ===== */
+  .gcaret{display:inline-block;width:15px;cursor:pointer;user-select:none;color:var(--navy);font-size:10px}
+  .glabel.gparentlbl{font-weight:800}
+  .gbar.gparent{background:transparent!important;box-shadow:none;height:15px;top:3px;border-radius:5px}
+  .gbar.gparent i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;opacity:.22}
+  @media (max-width:820px){ .cdet-row{grid-template-columns:110px 1fr 62px} .cwtable{font-size:10.5px} }
 </style>
 </head>
 <body>
@@ -563,18 +586,28 @@
     <h2 class="sec">Dòng tiền &amp; Thanh khoản <span class="tag">dự báo 13 tuần · thử kịch bản</span></h2>
     <div class="grid two" style="margin-bottom:18px">
       <div class="card">
-        <div class="ctitle">💧 Dự báo dòng tiền 13 tuần <small>· tuần dự báo âm tô đỏ</small></div>
+        <div class="ctitle">💧 Dòng tiền theo tuần — thực hiện &amp; dự báo 13 tuần <small>· cột đậm = đã thực hiện · tuần âm tô đỏ</small></div>
         <div class="toolbar" style="margin-bottom:10px">
           <label style="font-size:12.5px;display:flex;align-items:center;gap:7px;cursor:pointer"><input type="checkbox" id="wf_mbv"> Giả định giải tỏa 28 tỷ MBV</label>
           <label style="font-size:12.5px;display:flex;align-items:center;gap:7px;cursor:pointer"><input type="checkbox" id="wf_da"> Thu hồi 30 tỷ tạm ứng DAĐH</label>
         </div>
         <div id="cashchart"></div>
-        <p class="chartcap">Cột = thu/chi trong tuần; đường = số dư tiền khả dụng luỹ kế. Tuần có số dư dự báo âm sẽ tô <b style="color:var(--red)">đỏ</b>. Tích chọn kịch bản phía trên để xem trước tác động của từng quyết định.</p>
+        <p class="chartcap">Cột <b>đậm</b> = tuần đã <b>thực hiện</b> · cột <b>nhạt viền đứt</b> = tuần <b>dự báo (KH)</b>; đường = số dư tiền khả dụng (liền = thực tế, đứt = dự báo). Tuần có số dư âm tô <b style="color:var(--red)">đỏ</b>. Di chuột vào cột để xem chi tiết hạng mục; bấm để chọn tuần. Tích chọn kịch bản phía trên để xem trước tác động.</p>
       </div>
       <div class="card">
-        <div class="ctitle">⛽ Đồng hồ thanh khoản</div>
+        <div class="ctitle">⛽ Đồng hồ thanh khoản <small>· tự cập nhật theo tuần thực hiện gần nhất trong sheet DongTien</small></div>
         <div class="gaugewrap" id="gauge2"></div>
         <div style="margin-top:16px" id="cashkv"></div>
+      </div>
+    </div>
+    <div class="grid two" style="margin-bottom:18px">
+      <div class="card">
+        <div class="ctitle">📒 Bảng dòng tiền theo tuần <small>· nền xanh = đã có thực hiện · bấm dòng để xem chi tiết</small></div>
+        <div style="overflow-x:auto" id="cashtable"></div>
+      </div>
+      <div class="card">
+        <div class="ctitle">🔍 Chi tiết thu – chi <small id="cashdetailwk"></small></div>
+        <div id="cashdetail"></div>
       </div>
     </div>
     <div class="card">
@@ -703,10 +736,27 @@ const DB = {
     {n:"Tiền mặt + TGNH không kỳ hạn (khả dụng)", v:7.02, c:"g"},
     {n:"Tiền gửi kỳ hạn tại MBV (phong tỏa từ 2017)", v:24.87, c:"r"},
   ],
-  // 13 tuần: [thu, chi] tỷ đồng
-  cash13: [
-    [0.9,1.1],[0.8,1.0],[1.2,0.9],[0.7,1.3],[0.6,1.1],[0.5,1.4],[0.4,1.5],
-    [0.6,1.2],[1.1,1.0],[2.4,1.3],[3.2,1.6],[4.1,1.8],[5.0,2.0]
+  // Dòng tiền theo tuần (rolling — sheet DongTien). Tuần có thThu/thChi = ĐÃ THỰC HIỆN;
+  // tuần chỉ có khThu/khChi = DỰ BÁO. bal = số dư cuối kỳ thực hiện (nếu nhập).
+  // det = chi tiết hạng mục [thu: HTSX-XNK, Sự kiện, TMDV, Khác] [chi: HTSX-XNK, Sự kiện, TMDV, Kỹ thuật, Lưu niệm, Hành chính]. Đơn vị: tỷ.
+  cashWeeks: [
+    {wk:21, from:"25/5", to:"30/5", khThu:3.01, khChi:7.46, thThu:0.73, thChi:1.29, bal:6.09,
+     det:{thu:[0.08,0.41,0.10,0.14], chi:[1.11,0,0,0.01,0.02,0.16]}, note:"TH: chi trả thay thuế 876tr + CP mua ngoài 230tr"},
+    {wk:22, from:"1/6", to:"6/6", khThu:null, khChi:null, thThu:1.88, thChi:7.73, bal:0.25,
+     det:{thu:[1.62,0.12,0,0.14], chi:[5.02,0.62,1.01,0,0,1.08]}, note:"Bảo lãnh 2,83 tỷ (thư bảo lãnh nhà thầu) · BHXH ~295tr · lương"},
+    {wk:23, from:"8/6",  to:"13/6", khThu:0.9, khChi:1.1, thThu:null, thChi:null, bal:null, det:null, note:""},
+    {wk:24, from:"15/6", to:"20/6", khThu:0.8, khChi:1.0, thThu:null, thChi:null, bal:null, det:null, note:""},
+    {wk:25, from:"22/6", to:"27/6", khThu:1.2, khChi:0.9, thThu:null, thChi:null, bal:null, det:null, note:""},
+    {wk:26, from:"29/6", to:"4/7",  khThu:0.7, khChi:1.3, thThu:null, thChi:null, bal:null, det:null, note:""},
+    {wk:27, from:"6/7",  to:"11/7", khThu:0.6, khChi:1.1, thThu:null, thChi:null, bal:null, det:null, note:""},
+    {wk:28, from:"13/7", to:"18/7", khThu:0.5, khChi:1.4, thThu:null, thChi:null, bal:null, det:null, note:""},
+    {wk:29, from:"20/7", to:"25/7", khThu:0.4, khChi:1.5, thThu:null, thChi:null, bal:null, det:null, note:""},
+    {wk:30, from:"27/7", to:"1/8",  khThu:0.6, khChi:1.2, thThu:null, thChi:null, bal:null, det:null, note:""},
+    {wk:31, from:"3/8",  to:"8/8",  khThu:1.1, khChi:1.0, thThu:null, thChi:null, bal:null, det:null, note:""},
+    {wk:32, from:"10/8", to:"15/8", khThu:2.4, khChi:1.3, thThu:null, thChi:null, bal:null, det:null, note:""},
+    {wk:33, from:"17/8", to:"22/8", khThu:3.2, khChi:1.6, thThu:null, thChi:null, bal:null, det:null, note:""},
+    {wk:34, from:"24/8", to:"29/8", khThu:4.1, khChi:1.8, thThu:null, thChi:null, bal:null, det:null, note:""},
+    {wk:35, from:"31/8", to:"5/9",  khThu:5.0, khChi:2.0, thThu:null, thChi:null, bal:null, det:null, note:""}
   ],
   // Bản đồ nhiệt tuổi nợ [0-30,30-90,90-180,>180]
   aging: [
@@ -737,20 +787,29 @@ const DB = {
     {n:"Thu hộ PetroMacareo", v:7.0, note:"Khoản thu hộ", rag:"a", tr:"Theo dõi"},
     {n:"Dự phòng phải thu khó đòi", v:17.63, note:"Toàn Công ty", rag:"r", tr:"Đã trích lập"},
   ],
-  // Đường găng KH 2026 — [tên, phòng, plan bắt đầu(0-1 trong năm), plan kết thúc, %, critical]
+  // Đường găng KH 2026 — cha–con theo cột "Mã" (1 → 1.1 → 1.1.1).
+  // Dòng cha: s/e/p để null — tự tính từ việc con (computePlanRollups).
   plan: [
-    {t:"Bổ sung ngành nghề KD (mã 4730, 46711)", d:"TH·TMDV", s:0.05, e:0.45, p:30, crit:true},
-    {t:"Xin GP kinh doanh xăng dầu + thuê cửa hàng ≥5 năm", d:"TMDV", s:0.25, e:0.55, p:10, crit:true},
-    {t:"Thu xếp vốn lưu động (vay nội bộ/bảo lãnh, LS 3,3%)", d:"TCKT", s:0.20, e:0.55, p:20, crit:true},
-    {t:"Ký HĐ cung cấp MMO & than (PVOil/PVPower)", d:"TMDV", s:0.40, e:0.62, p:5, crit:true},
-    {t:"Bắt đầu cung cấp DV/SP mới (từ cuối T6/2026)", d:"TMDV", s:0.48, e:1.0, p:0, crit:true},
-    {t:"Xử lý công nợ ZJ15 + trích lập bổ sung 2,5 tỷ", d:"TCKT", s:0.05, e:0.50, p:40, crit:false},
-    {t:"Hoàn ứng DAĐH & thanh lý HĐ điều hành", d:"TCKT", s:0.20, e:0.90, p:15, crit:false},
-    {t:"Giải tỏa 28 tỷ tiền gửi MBV (bám Petrovietnam)", d:"TH·TCKT", s:0.10, e:0.95, p:10, crit:false},
-    {t:"Đề xuất đầu tư HWU/thiết bị thử vỉa (thuê mua)", d:"KT", s:0.30, e:0.75, p:20, crit:false},
-    {t:"Ban hành văn bản QLNB (DV, dòng tiền, QTRR, khoán)", d:"TH", s:0.05, e:0.70, p:25, crit:false},
-    {t:"Nộp báo cáo QTRR đúng hạn (trước ngày 05)", d:"TCKT", s:0.0, e:1.0, p:60, crit:false},
-    {t:"Lộ trình thoát giám sát đặc biệt (xử lý lỗ 2029)", d:"TH", s:0.0, e:1.0, p:10, crit:false},
+    {ma:"1",   t:"Phát triển dịch vụ/SP mới (than/MMO)", d:"TMDV", s:null, e:null, p:null, crit:true},
+    {ma:"1.1", t:"Bổ sung ngành nghề KD (mã 4730, 46711)", d:"TH·TMDV", s:0.05, e:0.45, p:30, crit:true},
+    {ma:"1.2", t:"Xin GP kinh doanh xăng dầu + thuê cửa hàng ≥5 năm", d:"TMDV", s:0.25, e:0.55, p:10, crit:true},
+    {ma:"1.3", t:"Thu xếp vốn lưu động (vay nội bộ/bảo lãnh, LS 3,3%)", d:"TCKT", s:0.20, e:0.55, p:20, crit:true},
+    {ma:"1.4", t:"Ký HĐ cung cấp MMO & than (PVOil/PVPower)", d:"TMDV", s:0.40, e:0.62, p:5, crit:true},
+    {ma:"1.5", t:"Bắt đầu cung cấp DV/SP mới (từ cuối T6/2026)", d:"TMDV", s:0.48, e:1.0, p:0, crit:true},
+    {ma:"2",   t:"KH Doanh thu dịch vụ kỹ thuật", d:"KT", s:null, e:null, p:null, crit:false},
+    {ma:"2.1", t:"Dịch vụ CCS", d:"KT", s:null, e:null, p:null, crit:false},
+    {ma:"2.1.1", t:"Đánh giá cơ hội / làm việc với đối tác CCS", d:"KT", s:0.15, e:0.40, p:30, crit:false},
+    {ma:"2.1.2", t:"Chào giá & ký hợp đồng dịch vụ CCS", d:"KT", s:0.35, e:0.70, p:0, crit:false},
+    {ma:"2.1.3", t:"Triển khai hợp đồng CCS đầu tiên", d:"KT", s:0.60, e:1.0, p:0, crit:false},
+    {ma:"2.2", t:"Đề xuất đầu tư HWU/thiết bị thử vỉa (thuê mua)", d:"KT", s:0.30, e:0.75, p:20, crit:false},
+    {ma:"3",   t:"Xử lý tài chính & công nợ", d:"TCKT", s:null, e:null, p:null, crit:false},
+    {ma:"3.1", t:"Xử lý công nợ ZJ15 + trích lập bổ sung 2,5 tỷ", d:"TCKT", s:0.05, e:0.50, p:40, crit:false},
+    {ma:"3.2", t:"Hoàn ứng DAĐH & thanh lý HĐ điều hành", d:"TCKT", s:0.20, e:0.90, p:15, crit:false},
+    {ma:"3.3", t:"Giải tỏa 28 tỷ tiền gửi MBV (bám Petrovietnam)", d:"TH·TCKT", s:0.10, e:0.95, p:10, crit:false},
+    {ma:"4",   t:"Quản trị & tuân thủ", d:"TH", s:null, e:null, p:null, crit:false},
+    {ma:"4.1", t:"Ban hành văn bản QLNB (DV, dòng tiền, QTRR, khoán)", d:"TH", s:0.05, e:0.70, p:25, crit:false},
+    {ma:"4.2", t:"Nộp báo cáo QTRR đúng hạn (trước ngày 05)", d:"TCKT", s:0.0, e:1.0, p:60, crit:false},
+    {ma:"4.3", t:"Lộ trình thoát giám sát đặc biệt (xử lý lỗ 2029)", d:"TH", s:0.0, e:1.0, p:10, crit:false},
   ],
   // Việc cần quyết định (Kanban)
   decisions: {
@@ -819,7 +878,50 @@ function hideTip(){ TIP.style.opacity=0; }
 addEventListener("scroll",hideTip,true);
 
 /* ============ ĐỒNG HỒ THANH KHOẢN ============ */
-function runwayWeeks(){ return F.tien_kha_dung / F.weekly_burn; }
+// Nhãn hạng mục chi tiết dòng tiền (khớp cột I–R sheet DongTien)
+const CASH_CATS = {
+  thu:["HTSX-XNK","Sự kiện","Thương mại DV","Thu khác"],
+  chi:["DV HTSX-XNK","DV sự kiện","DV TMDV","DV kỹ thuật (G&G)","Khu lưu niệm TB","Chi hành chính"]
+};
+function hasTH(w){ return w.thThu!=null || w.thChi!=null; }
+// Tách tuần đã thực hiện / tuần dự báo (hiển thị tối đa 8 tuần TH gần nhất + 13 tuần dự báo)
+function cashSplit(){
+  const histAll = DB.cashWeeks.filter(hasTH);
+  const lastIdx = histAll.length ? DB.cashWeeks.indexOf(histAll[histAll.length-1]) : -1;
+  const fut = DB.cashWeeks.slice(lastIdx+1).filter(w=>!hasTH(w)).slice(0,13);
+  return {histAll, hist: histAll.slice(-8), fut};
+}
+// Chuỗi hiển thị: mỗi tuần {w, mode th/kh, thu, chi, bal} — số dư TH lấy theo ô "Số dư cuối TH" nếu nhập
+function cashSeries(mbv,da){
+  const {hist,fut}=cashSplit();
+  let bal=F.tien_kha_dung;
+  if(hist.length){ const f=hist[0]; if(f.bal!=null) bal=f.bal-((f.thThu||0)-(f.thChi||0)); }
+  const out=[];
+  hist.forEach(w=>{ const thu=w.thThu||0, chi=w.thChi||0;
+    bal = (w.bal!=null)? w.bal : bal+thu-chi;
+    out.push({w, mode:"th", thu, chi, bal}); });
+  fut.forEach((w,fi)=>{ let thu=w.khThu||0; const chi=w.khChi||0;
+    if(mbv&&fi===4)thu+=28; if(da&&fi===6)thu+=30;
+    bal+=thu-chi; out.push({w, mode:"kh", thu, chi, bal}); });
+  return out;
+}
+// Thanh khoản hiện hành: ưu tiên tuần thực hiện gần nhất trong DongTien; fallback = sheet TaiChinh
+function liquidityNow(){
+  const {histAll}=cashSplit();
+  if(histAll.length){
+    const last=histAll[histAll.length-1];
+    let cash=last.bal;
+    if(cash==null){ cash=F.tien_kha_dung;
+      histAll.forEach(w=>{ cash = (w.bal!=null)? w.bal : cash+(w.thThu||0)-(w.thChi||0); }); }
+    const chis=histAll.slice(-8).map(w=>w.thChi||0).filter(v=>v>0);
+    const burn=chis.length? chis.reduce((a,b)=>a+b,0)/chis.length : F.weekly_burn;
+    let prev=null;
+    if(histAll.length>1){ const p=histAll[histAll.length-2]; if(p.bal!=null) prev=p.bal/Math.max(burn,.01); }
+    return {cash, burn, weeks:cash/Math.max(burn,.01), prevWeeks:prev, src:`tuần ${last.wk} (${last.from}–${last.to})`};
+  }
+  return {cash:F.tien_kha_dung, burn:F.weekly_burn, weeks:F.tien_kha_dung/Math.max(F.weekly_burn,.01), prevWeeks:null, src:null};
+}
+function runwayWeeks(){ return liquidityNow().weeks; }
 function ragRunway(w){ return w<8?"r":(w<16?"a":"g"); }
 function gaugeSVG(){
   const w = runwayWeeks(); const rag=ragRunway(w);
@@ -845,15 +947,16 @@ function gaugeSVG(){
   </svg>`;
 }
 function renderGauge(el){
-  const w=runwayWeeks(), rag=ragRunway(w);
+  const L=liquidityNow(), w=L.weeks, rag=ragRunway(w);
   const msg = rag==="r"?"Dưới ngưỡng an toàn — cần hành động ngay về thanh khoản."
     : rag==="a"?"Sát ngưỡng — theo dõi sát, đẩy nhanh thu hồi công nợ."
     : "Trong vùng an toàn.";
+  const trend = L.prevWeeks!=null ? `<div style="margin-top:4px;font-size:12px;color:var(--muted)">Tuần trước: ~${n1(L.prevWeeks)} tuần ${L.prevWeeks>w?"↘":"↗"}</div>` : "";
   el.innerHTML = gaugeSVG() + `<div class="gaugebig">
-    <div>Tiền khả dụng: <b>${n2(F.tien_kha_dung)} tỷ</b> <span class="badge ${rag}">${rag==="r"?"ĐỎ":rag==="a"?"VÀNG":"XANH"}</span></div>
-    <div style="margin-top:6px">Chi vận hành ~<b>${n2(F.weekly_burn)} tỷ/tuần</b> → còn <b>${n1(w)} tuần</b>.</div>
+    <div>Tiền khả dụng: <b>${n2(L.cash)} tỷ</b> <span class="badge ${rag}">${rag==="r"?"ĐỎ":rag==="a"?"VÀNG":"XANH"}</span></div>
+    <div style="margin-top:6px">Chi bình quân ~<b>${n2(L.burn)} tỷ/tuần</b> → còn <b>${n1(w)} tuần</b>.</div>${trend}
     <div style="margin-top:6px;color:${rag==='r'?'var(--red)':rag==='a'?'#b45309':'var(--green)'}">${msg}</div>
-    <div style="margin-top:8px;font-size:12px">Đã loại trừ <b>28 tỷ</b> tiền gửi phong tỏa tại MBV. Ngưỡng theo dõi: đủ chi ≥ 8 tuần.</div>
+    <div style="margin-top:8px;font-size:12px">${L.src?`Số theo <b>${L.src}</b> — sheet DongTien (số dư cuối kỳ + chi bình quân các tuần đã thực hiện).`:"Số theo sheet TaiChinh (chưa có tuần thực hiện trong DongTien)."} Đã loại <b>28 tỷ</b> phong tỏa MBV. Ngưỡng: đủ chi ≥ 8 tuần.</div>
   </div>`;
 }
 
@@ -861,11 +964,11 @@ function renderGauge(el){
 function kpiCards(){
   const pctPlan = F.dt_q1/F.dt_kh_nam*100;
   const dtGiam = (F.dt_q1-F.dt_ck)/F.dt_ck*100;
-  const w=runwayWeeks();
+  const L=liquidityNow(), w=L.weeks;
   return [
     {l:"Doanh thu Quý I", v:n2(F.dt_q1), u:"tỷ", d:`${n1(dtGiam)}% so cùng kỳ`, rag:"r"},
     {l:"LN trước thuế", v:n2(F.ln_tt), u:"tỷ", d:"biên gộp 15,8%", rag:"a"},
-    {l:"Tiền khả dụng", v:n2(F.tien_kha_dung), u:"tỷ", d:`~${n1(w)} tuần chi`, rag:"a"},
+    {l:"Tiền khả dụng", v:n2(L.cash), u:"tỷ", d:L.src?`theo ${L.src}`:`~${n1(w)} tuần chi`, rag:ragRunway(w)},
     {l:"Lỗ lũy kế", v:n2(F.lo_luy_ke), u:"tỷ", d:"diện giám sát đặc biệt", rag:"r"},
     {l:"% hoàn thành KH năm", v:n1(pctPlan), u:"%", d:"90% DT là DV mới (Q2+)", rag:"r"},
     {l:"Còn đủ tiền chi", v:n1(w), u:"tuần", d:"ngưỡng ≥ 8 tuần", rag:ragRunway(w)},
@@ -968,40 +1071,119 @@ function renderLoss(){
     </div>`;
 }
 
-/* ============ DÒNG TIỀN 13 TUẦN ============ */
+/* ============ DÒNG TIỀN THEO TUẦN (KH/TH + chi tiết hạng mục) ============ */
+let CASH_SEL=null; // tuần đang chọn (số wk)
+function cashTipHTML(row){
+  const w=row.w;
+  let h=`<b>Tuần ${w.wk}</b>${w.from?` (${w.from}–${w.to})`:""} · ${row.mode==="th"?"ĐÃ THỰC HIỆN":"DỰ BÁO"}<br>`;
+  if(w.khThu!=null||w.khChi!=null) h+=`KH: thu <b>${n2(w.khThu||0)}</b> · chi <b>${n2(w.khChi||0)}</b> tỷ<br>`;
+  if(hasTH(w)) h+=`TH: thu <b>${n2(w.thThu||0)}</b> · chi <b>${n2(w.thChi||0)}</b> tỷ<br>`;
+  h+=`Số dư cuối tuần: <b>${n2(row.bal)} tỷ</b>`;
+  if(w.det){
+    const li=(names,vals)=>names.map((nm,i)=>vals[i]>0.005?`<br>&nbsp;· ${nm}: ${n2(vals[i])}`:"").join("");
+    h+=`<br><span style="color:#9fb2c8">— Thu:</span>${li(CASH_CATS.thu,w.det.thu)||" —"}`;
+    h+=`<br><span style="color:#9fb2c8">— Chi:</span>${li(CASH_CATS.chi,w.det.chi)||" —"}`;
+  }
+  return h;
+}
+function selectCashWeek(wk){ CASH_SEL=wk; renderCashTable(); renderCashDetail(); }
 function renderCash(){
   const wf_mbv=$("#wf_mbv")&&$("#wf_mbv").checked, wf_da=$("#wf_da")&&$("#wf_da").checked;
-  const W=620,H=250,pad=40, n=13;
-  let bal=F.tien_kha_dung; const bals=[]; const bars=DB.cash13.map((c,i)=>{
-    let inflow=c[0]; if(wf_mbv && i===4) inflow+=28; if(wf_da && i===6) inflow+=30;
-    const net=inflow-c[1]; bal+=net; bals.push(bal); return {in:inflow,out:c[1],net,bal};
-  });
-  const maxBar=Math.max(...bars.map(b=>Math.max(b.in,b.out)),1);
-  const minBal=Math.min(0,...bals), maxBal=Math.max(...bals);
-  const bw=(W-2*pad)/n*0.34;
-  const bx=i=>pad+i*(W-2*pad)/(n-1);
+  const rows=cashSeries(wf_mbv,wf_da);
+  const n=rows.length; if(!n){ $("#cashchart").innerHTML="<p class='note'>Chưa có dữ liệu tuần trong sheet DongTien.</p>"; return; }
+  if(CASH_SEL==null || !rows.some(r=>r.w.wk===CASH_SEL)){
+    const lastTH=rows.filter(r=>r.mode==="th").pop(); CASH_SEL=(lastTH||rows[0]).w.wk;
+  }
+  const nHist=rows.filter(r=>r.mode==="th").length;
+  const W=620,H=250,pad=40;
+  const maxBar=Math.max(...rows.map(b=>Math.max(b.thu,b.chi)),1);
+  const bals=rows.map(r=>r.bal);
+  const minBal=Math.min(0,...bals), maxBal=Math.max(...bals,1);
+  const bw=Math.min(14,(W-2*pad)/n*0.34);
+  const bx=i=>pad+i*(W-2*pad)/Math.max(n-1,1);
   const by=v=>H-pad-(v/maxBar)*(H-2*pad-40);
   const ly=v=>{ const rng=maxBal-minBal||1; return pad+8+(1-(v-minBal)/rng)*(H-2*pad-40); };
-  let bars_svg="", line="";
-  bars.forEach((b,i)=>{
-    const cx=bx(i);
-    bars_svg+=`<rect x="${cx-bw-1}" y="${by(b.in)}" width="${bw}" height="${H-pad-by(b.in)}" fill="#16a34a" opacity=".8" rx="2"/>`;
-    bars_svg+=`<rect x="${cx+1}" y="${by(b.out)}" width="${bw}" height="${H-pad-by(b.out)}" fill="#d8584e" opacity=".7" rx="2"/>`;
-    line+=(i?"L":"M")+cx+" "+ly(b.bal)+" ";
+  let bars_svg="", lineTH="", lineKH="", hits="";
+  rows.forEach((b,i)=>{
+    const cx=bx(i), th=b.mode==="th";
+    const opa=th?".85":".32", dash=th?"":`stroke="#16a34a" stroke-dasharray="3 2"`;
+    bars_svg+=`<rect x="${cx-bw-1}" y="${by(b.thu)}" width="${bw}" height="${Math.max(H-pad-by(b.thu),0)}" fill="#16a34a" opacity="${opa}" ${th?"":'stroke="#16a34a" stroke-width="1" stroke-dasharray="3 2"'} rx="2"/>`;
+    bars_svg+=`<rect x="${cx+1}" y="${by(b.chi)}" width="${bw}" height="${Math.max(H-pad-by(b.chi),0)}" fill="#d8584e" opacity="${th?'.75':'.28'}" ${th?"":'stroke="#d8584e" stroke-width="1" stroke-dasharray="3 2"'} rx="2"/>`;
+    const seg=(i?"L":"M")+cx+" "+ly(b.bal)+" ";
+    if(i<nHist){ lineTH+=seg; if(i===nHist-1) lineKH="M"+cx+" "+ly(b.bal)+" "; }
+    else lineKH+=(lineKH?"L":"M")+cx+" "+ly(b.bal)+" ";
+    hits+=`<rect x="${cx-bw-3}" y="${pad-8}" width="${bw*2+6}" height="${H-2*pad+16}" fill="transparent" style="cursor:pointer" data-ci="${i}"/>`;
   });
-  const pts=bars.map((b,i)=>`<circle cx="${bx(i)}" cy="${ly(b.bal)}" r="3.5" fill="${b.bal<0?'#d8584e':'#2e3192'}"/>${b.bal<0?`<rect x="${bx(i)-bw-2}" y="${pad}" width="${bw*2+4}" height="${H-pad-pad}" fill="#d8584e" opacity=".07"/>`:""}`).join("");
+  const pts=rows.map((b,i)=>`<circle cx="${bx(i)}" cy="${ly(b.bal)}" r="3.5" fill="${b.bal<0?'#d8584e':'#2e3192'}" ${b.mode==='kh'?'fill-opacity=".55"':''}/>${b.bal<0?`<rect x="${bx(i)-bw-2}" y="${pad}" width="${bw*2+4}" height="${H-2*pad}" fill="#d8584e" opacity=".07"/>`:""}`).join("");
   const zero=ly(0);
-  const xl=bars.map((b,i)=>`<text x="${bx(i)}" y="${H-pad+13}" text-anchor="middle" font-size="8.5" fill="#94a3b8">T${i+1}</text>`).join("");
-  const anyNeg=bars.some(b=>b.bal<0);
-  $("#cashchart").innerHTML=`<div class="svroll"><svg viewBox="0 0 ${W} ${H}" class="svgc">
+  const xl=rows.map((b,i)=>`<text x="${bx(i)}" y="${H-pad+13}" text-anchor="middle" font-size="8.5" fill="${b.mode==='th'?'#16612f':'#94a3b8'}" font-weight="${b.mode==='th'?'800':'400'}">T${b.w.wk}</text>`).join("");
+  // vạch phân cách thực hiện | dự báo
+  let divider="";
+  if(nHist>0 && nHist<n){
+    const dx=(bx(nHist-1)+bx(nHist))/2;
+    divider=`<line x1="${dx}" y1="${pad-8}" x2="${dx}" y2="${H-pad}" stroke="var(--navy)" stroke-dasharray="5 3" stroke-width="1.4" opacity=".65"/>
+    <text x="${dx-4}" y="${pad}" text-anchor="end" font-size="8.5" fill="var(--navy)" font-weight="800">◂ thực hiện</text>
+    <text x="${dx+4}" y="${pad}" font-size="8.5" fill="#94a3b8" font-weight="700">dự báo ▸</text>`;
+  }
+  const anyNeg=rows.some(b=>b.bal<0);
+  $("#cashchart").innerHTML=`<div class="svroll"><svg viewBox="0 0 ${W} ${H}" class="svgc" id="cashsvg">
     ${minBal<0?`<line x1="${pad}" y1="${zero}" x2="${W-pad}" y2="${zero}" stroke="#d8584e" stroke-dasharray="3 3" opacity=".6"/>`:""}
-    ${bars_svg}<path d="${line}" fill="none" stroke="#2e3192" stroke-width="2.5"/>${pts}${xl}
-    <text x="${pad}" y="${pad-4}" font-size="9" fill="#94a3b8">Số dư cuối tuần (tỷ) · cột xanh=thu, đỏ=chi</text>
+    ${bars_svg}${divider}
+    <path d="${lineTH}" fill="none" stroke="#2e3192" stroke-width="2.5"/>
+    <path d="${lineKH}" fill="none" stroke="#2e3192" stroke-width="2.2" stroke-dasharray="6 4" opacity=".8"/>
+    ${pts}${xl}${hits}
+    <text x="${pad}" y="${pad-4}" font-size="9" fill="#94a3b8">Số dư cuối tuần (tỷ) · cột xanh=thu, đỏ=chi · đậm=thực hiện, nhạt=dự báo</text>
   </svg></div>
   <div style="margin-top:8px;font-size:12.5px;font-weight:600;color:${anyNeg?'var(--red)':'var(--green)'}">
-    ${anyNeg?'🔴 Có tuần số dư dự báo ÂM — cần thu xếp dòng tiền.':'🟢 Không có tuần âm trong 13 tuần theo kịch bản hiện tại.'}
-    Số dư cuối kỳ dự báo: <b>${n2(bars[n-1].bal)} tỷ</b>.
+    ${anyNeg?'🔴 Có tuần số dư ÂM trong chuỗi — cần thu xếp dòng tiền.':'🟢 Không có tuần âm theo kịch bản hiện tại.'}
+    Số dư cuối kỳ dự báo: <b>${n2(rows[n-1].bal)} tỷ</b>.
   </div>`;
+  $$("#cashsvg [data-ci]").forEach(el=>{
+    const row=rows[+el.dataset.ci];
+    el.onmousemove=e=>showTip(e,cashTipHTML(row));
+    el.onmouseleave=hideTip;
+    el.onclick=()=>selectCashWeek(row.w.wk);
+  });
+  renderCashTable(); renderCashDetail();
+}
+function renderCashTable(){
+  const wf_mbv=$("#wf_mbv")&&$("#wf_mbv").checked, wf_da=$("#wf_da")&&$("#wf_da").checked;
+  const rows=cashSeries(wf_mbv,wf_da);
+  if(!rows.length){ $("#cashtable").innerHTML=""; return; }
+  const td=(v,cls)=>v==null?`<td class="dim">—</td>`:`<td class="${cls||""}${v<0?" neg":""}">${n2(v)}</td>`;
+  $("#cashtable").innerHTML=`<table class="cwtable"><thead><tr>
+    <th>Tuần</th><th>Thời gian</th><th>Thu KH</th><th>Thu TH</th><th>Chi KH</th><th>Chi TH</th><th>Số dư cuối</th><th style="text-align:left">Ghi chú</th></tr></thead><tbody>`+
+    rows.map(r=>{ const w=r.w;
+      return `<tr class="${r.mode==='th'?'th-row':''}${w.wk===CASH_SEL?' selweek':''}" data-wk="${w.wk}">
+      <td><b>T${w.wk}</b></td><td>${w.from?w.from+"–"+w.to:""}</td>
+      ${td(w.khThu)}${td(w.thThu)}${td(w.khChi)}${td(w.thChi)}
+      <td class="${r.bal<0?'neg':''}" style="font-weight:800">${n2(r.bal)}${r.mode==='kh'?'<span class="dim">*</span>':''}</td>
+      <td style="text-align:left;max-width:200px;white-space:normal;font-size:10.5px;color:var(--muted)">${w.note||""}</td></tr>`; }).join("")+
+    `</tbody></table><p class="chartcap" style="margin-top:8px">Đơn vị: tỷ đồng · <b>*</b> = số dư dự báo (cộng dồn theo KH${wf_mbv||wf_da?" + kịch bản đang tích":""}). Nguồn: sheet <b>DongTien</b> — mỗi tuần 1 dòng, thêm dòng mới &amp; điền cột TH khi hết tuần.</p>`;
+  $$("#cashtable tr[data-wk]").forEach(tr=>{ tr.onclick=()=>selectCashWeek(+tr.dataset.wk||tr.dataset.wk); });
+}
+function renderCashDetail(){
+  const w=DB.cashWeeks.find(x=>x.wk===CASH_SEL);
+  const el=$("#cashdetail"); if(!el) return;
+  if(!w){ el.innerHTML="<p class='note'>Bấm một tuần trên biểu đồ hoặc bảng để xem chi tiết.</p>"; $("#cashdetailwk").textContent=""; return; }
+  $("#cashdetailwk").textContent=`· tuần ${w.wk}${w.from?` (${w.from}–${w.to})`:""} — ${hasTH(w)?"số thực hiện":"số kế hoạch"}`;
+  const sumRow=`<div class="cdet-row" style="font-weight:800"><div class="nm">Tổng</div><div></div><div class="vv"></div></div>`;
+  const block=(title,names,vals,color)=>{
+    const mx=Math.max(...vals,0.01), tot=vals.reduce((a,b)=>a+b,0);
+    return `<div class="cdet-h">${title} · tổng <b>${n2(tot)} tỷ</b></div>`+
+      names.map((nm,i)=>`<div class="cdet-row"><div class="nm">${nm}</div>
+        <div class="tr2"><i style="width:${vals[i]/mx*100}%;background:${color}"></i></div>
+        <div class="vv">${vals[i]>0?n2(vals[i]):"·"}</div></div>`).join("");
+  };
+  if(w.det){
+    el.innerHTML = block("💰 Thu trong tuần",CASH_CATS.thu,w.det.thu,"#16a34a")
+      + block("💸 Chi trong tuần",CASH_CATS.chi,w.det.chi,"#d8584e")
+      + (w.note?`<p class="chartcap" style="margin-top:10px">📝 ${w.note}</p>`:"");
+  } else {
+    el.innerHTML = `<div class="alert blue"><h4>Tuần ${w.wk} chưa có chi tiết hạng mục</h4>
+      <ul><li>Tổng ${hasTH(w)?`thực hiện: thu <b>${n2(w.thThu||0)}</b> · chi <b>${n2(w.thChi||0)}</b> tỷ`:`kế hoạch: thu <b>${n2(w.khThu||0)}</b> · chi <b>${n2(w.khChi||0)}</b> tỷ`}.</li>
+      <li>Muốn xem cơ cấu: điền các cột "Thu: …" / "Chi: …" (cột I–R) của dòng tuần này trong sheet <b>DongTien</b>.</li></ul></div>`;
+  }
 }
 function renderCashStruct(){
   const total=DB.cashstruct.reduce((s,x)=>s+x.v,0);
@@ -1087,40 +1269,82 @@ function renderKeyDebts(){
       <td><span class="ck-tag ${d.rag}">${d.tr}</span></td></tr>`).join("")+`</tbody></table>`;
 }
 
-/* ============ GANTT ĐƯỜNG GĂNG ============ */
+/* ============ GANTT ĐƯỜNG GĂNG (cha–con theo Mã) ============ */
 function ganttColor(p, crit){ if(crit && p<50) return "#dc2626"; if(p>=80)return"#16a34a"; if(p>=40)return"#f59e0b"; return "#dc2626"; }
+// Gán cấp/lá và tự tính chỉ số dòng cha từ việc con (gọi sau khi nạp DB.plan)
+function computePlanRollups(){
+  const P=DB.plan;
+  P.forEach((t,i)=>{ t.ma=String(t.ma!=null&&t.ma!==""?t.ma:(i+1)).trim(); t.lvl=t.ma.split(".").length; });
+  P.forEach(t=>{ t.leaf=!P.some(o=>o!==t && o.ma.startsWith(t.ma+".")); });
+  const maxL=Math.max(...P.map(t=>t.lvl));
+  for(let L=maxL-1;L>=1;L--){
+    P.filter(t=>t.lvl===L && !t.leaf).forEach(t=>{
+      const kids=P.filter(o=>o.lvl===L+1 && o.ma.startsWith(t.ma+"."));
+      const use=kids.filter(k=>k.s!=null && k.e!=null);
+      if(t.s==null && use.length) t.s=Math.min(...use.map(k=>k.s));
+      if(t.e==null && use.length) t.e=Math.max(...use.map(k=>k.e));
+      if(t.p==null && use.length){
+        const wsum=use.reduce((a,k)=>a+Math.max(k.e-k.s,.01),0);
+        t.p=Math.round(use.reduce((a,k)=>a+(k.p||0)*Math.max(k.e-k.s,.01),0)/(wsum||1));
+      }
+      if(!t.crit) t.crit=kids.some(k=>k.crit);
+    });
+  }
+  P.forEach(t=>{ if(t.s==null)t.s=0; if(t.e==null)t.e=1; if(t.p==null)t.p=0; });
+}
+let PLANCLOSED=new Set(); // mã các nhóm đang thu gọn
+function togglePlan(ma){ PLANCLOSED.has(ma)?PLANCLOSED.delete(ma):PLANCLOSED.add(ma); renderPlan(); }
+function planVisible(t){
+  const parts=t.ma.split(".");
+  for(let i=1;i<parts.length;i++){ if(PLANCLOSED.has(parts.slice(0,i).join("."))) return false; }
+  return true;
+}
 function renderPlan(){
   const filt=$("#gfilter").value, st=$("#gstatus").value;
-  const rows=DB.plan.filter(t=>{
-    if(filt!=="all" && !t.d.includes(filt)) return false;
+  const leafPass=t=>{
+    if(filt!=="all" && !t.d.split("·").some(x=>x.trim()===filt)) return false;
     if(st==="crit" && !t.crit) return false;
     if(st==="late" && t.p>=50) return false;
     if(st==="ontrack" && t.p<80) return false;
     return true;
+  };
+  const rows=DB.plan.filter(t=>{
+    if(!planVisible(t)) return false;
+    if(t.leaf) return leafPass(t);
+    return DB.plan.some(o=>o.leaf && o.ma.startsWith(t.ma+".") && leafPass(o));
   });
   const asofFrac = 0.245; // 31/3 ≈ 24.5% năm
-  let head=`<div class="grow ghead"><div class="glabel">Đầu việc · phòng chủ trì</div><div class="gtrack"><div class="qgrid">${["Q1","Q2","Q3","Q4"].map(q=>`<div class="qcell yr">${q}/2026</div>`).join("")}</div></div></div>`;
+  let head=`<div class="grow ghead"><div class="glabel">Đầu việc · phòng chủ trì <small style="font-weight:400;opacity:.75">(bấm ▾ để thu gọn nhóm)</small></div><div class="gtrack"><div class="qgrid">${["Q1","Q2","Q3","Q4"].map(q=>`<div class="qcell yr">${q}/2026</div>`).join("")}</div></div></div>`;
   let body=rows.map((t,ri)=>{
     const x1=t.s*100, w=(t.e-t.s)*100;
     const actW=w*t.p/100;
     const col=ganttColor(t.p,t.crit);
     const crit=t.crit?'style="outline:2px solid #dc2626;outline-offset:1px;animation:'+(t.p<50?'blinkc 1.4s infinite':'none')+'"':'';
-    return `<div class="grow" title="${t.t}">
-      <div class="glabel"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${deptColor(t.d)};margin-right:6px"></span>${t.t} <b style="color:${deptColor(t.d)};font-size:10px">[${t.d}]</b></div>
+    const indent=(t.lvl-1)*15;
+    const caret=t.leaf?`<span class="gcaret" style="opacity:.25">·</span>`
+      :`<span class="gcaret" data-ma="${t.ma}">${PLANCLOSED.has(t.ma)?"▸":"▾"}</span>`;
+    const bar = t.leaf
+      ? `<div class="gbar plan" style="left:${x1}%;width:${w}%;background:${deptColor(t.d)}" ${crit}></div>
+         <div class="gbaract ${t.p===0?'zero':''}" style="left:${x1}%;width:${t.p===0?'6px':actW+'%'};background:${col}"><span class="gpct">${t.p}%</span></div>`
+      : `<div class="gbar gparent" style="left:${x1}%;width:${w}%;border:2px solid ${deptColor(t.d)}" ${crit}><i style="width:${t.p}%;background:${deptColor(t.d)}"></i><span class="gpct" style="color:${deptColor(t.d)};font-weight:800">${t.p}%</span></div>`;
+    return `<div class="grow${t.leaf?"":" pinit"}" title="${t.ma} · ${t.t}">
+      <div class="glabel${t.leaf?"":" gparentlbl"}" style="padding-left:${10+indent}px">${caret}<span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${deptColor(t.d)};margin-right:6px"></span><span style="color:#94a3b8;font-size:10px;margin-right:4px">${t.ma}</span>${t.t} <b style="color:${deptColor(t.d)};font-size:10px">[${t.d}]</b></div>
       <div class="gtrack"><div class="qgrid">${[0,1,2,3].map(()=>`<div class="qcell yr"></div>`).join("")}</div>
         <div class="todayline${ri===0?' lbl':''}" style="left:${asofFrac*100}%"></div>
-        <div class="gbar plan" style="left:${x1}%;width:${w}%;background:${deptColor(t.d)}" ${crit}></div>
-        <div class="gbaract ${t.p===0?'zero':''}" style="left:${x1}%;width:${t.p===0?6:actW}px;width:${t.p===0?'6px':actW+'%'};background:${col}"><span class="gpct">${t.p}%</span></div>
+        ${bar}
       </div></div>`;
   }).join("");
   $("#gantt-body").innerHTML=head+body;
-  $("#gcount").textContent=`${rows.length} đầu việc · 🔴 ${DB.plan.filter(t=>t.crit).length} trên đường găng`;
+  $$("#gantt-body .gcaret[data-ma]").forEach(c=>{ c.onclick=e=>{ e.stopPropagation(); togglePlan(c.dataset.ma); }; });
+  const leaves=DB.plan.filter(t=>t.leaf);
+  $("#gcount").textContent=`${leaves.length} đầu việc trong ${DB.plan.length-leaves.length} nhóm · 🔴 ${leaves.filter(t=>t.crit).length} trên đường găng`;
 }
 function renderSwim(){
-  const depts=[...new Set(DB.plan.map(t=>t.d))];
+  const leaves=DB.plan.filter(t=>t.leaf);
+  const depts=[...new Set(leaves.map(t=>t.d))];
   let head=`<div class="swimhead"><div class="swimlbl" style="background:var(--navy)">Phòng</div><div class="yr">${["Q1","Q2","Q3","Q4"].map(q=>`<span>${q}/2026</span>`).join("")}</div></div>`;
   let rows=depts.map(dp=>{
-    const items=DB.plan.filter(t=>t.d===dp);
+    const items=leaves.filter(t=>t.d===dp);
     const bars=items.map((t,k)=>{
       const col=ganttColor(t.p,t.crit);
       return `<div class="swimbar" style="left:${t.s*100}%;width:${(t.e-t.s)*100}%;top:${8+k*24}px;background:${col};${t.crit?'outline:2px solid #dc2626;outline-offset:-1px':''}" onmousemove="showTip(event,'<b>${t.t.replace(/'/g,'')}</b><br>${t.p}% hoàn thành${t.crit?' · 🔴 đường găng':''}')" onmouseleave="hideTip()">${t.t}</div>`;
@@ -1266,14 +1490,14 @@ function renderPBI(){
 
 /* ============ COCKPIT (LÃNH ĐẠO) ============ */
 function renderCockpit(){
-  const K=kpiCards(); const w=runwayWeeks();
+  const K=kpiCards(); const L=liquidityNow(); const w=L.weeks;
   const dec=DB.decisions.wait;
   const topRisks=[...DB.risks].sort((a,b)=>(b.l+b.i)-(a.l+a.i)).slice(0,4);
   const start=19.15, done=(start-F.lo_luy_ke)/start*100;
   $("#cockpit").innerHTML=`
   <div class="ck-banner">
     <div><h2>Bảng điều hành Chủ tịch · PVEP SH</h2><div class="ck-sub">Toàn cảnh Công ty tại ${dt(DB.asof)} — số liệu Báo cáo KSV &amp; tài chính Quý I/2026</div>
-      <div class="ck-exec">Doanh thu Quý I <b>${n2(F.dt_q1)} tỷ</b> (giảm 43%), lợi nhuận mỏng <b>${n2(F.ln_tt)} tỷ</b>; tiền khả dụng <b>${n2(F.tien_kha_dung)} tỷ</b> (~${n1(w)} tuần); lỗ luỹ kế <b>${n2(F.lo_luy_ke)} tỷ</b> — thuộc diện giám sát đặc biệt. Trọng tâm: gỡ các khoản tiền bị đọng &amp; đẩy nhanh dịch vụ mới.</div>
+      <div class="ck-exec">Doanh thu Quý I <b>${n2(F.dt_q1)} tỷ</b> (giảm 43%), lợi nhuận mỏng <b>${n2(F.ln_tt)} tỷ</b>; tiền khả dụng <b>${n2(L.cash)} tỷ</b> (~${n1(w)} tuần${L.src?", theo "+L.src:""}); lỗ luỹ kế <b>${n2(F.lo_luy_ke)} tỷ</b> — thuộc diện giám sát đặc biệt. Trọng tâm: gỡ các khoản tiền bị đọng &amp; đẩy nhanh dịch vụ mới.</div>
     </div>
     <button class="ck-back" onclick="setRole('cv')">Xem chi tiết ›</button>
   </div>
@@ -1290,7 +1514,7 @@ function renderCockpit(){
   </div>
   <div class="ck-grid-3">
     <div class="ck-card"><h3>⛽ Thanh khoản</h3><div class="ck-body" style="text-align:center">${gaugeSVG()}
-      <div style="font-size:12.5px;color:var(--muted);margin-top:6px">Tiền khả dụng <b>${n2(F.tien_kha_dung)} tỷ</b> · đã loại 28 tỷ phong tỏa</div></div></div>
+      <div style="font-size:12.5px;color:var(--muted);margin-top:6px">Tiền khả dụng <b>${n2(L.cash)} tỷ</b>${L.src?` · ${L.src}`:""} · đã loại 28 tỷ phong tỏa</div></div></div>
     <div class="ck-card"><h3>🧊 Khoản tiền bị đọng trọng điểm</h3><div class="ck-body">
       ${DB.keydebts.slice(0,4).map(d=>`<div class="ck-barrow"><div class="ck-name">${d.n}</div><div class="ck-track2"><i style="width:${d.v/30*100}%;background:var(--${d.rag==='r'?'red':'amber'})"></i></div><div class="ck-v">${n1(d.v)} tỷ</div></div>`).join("")}
     </div><div class="ck-foot">Tổng ~<b>${n1(28+21.4+30.35+7)} tỷ</b> đang bị đọng, chưa thu hồi được</div></div>
@@ -1309,14 +1533,22 @@ function renderCockpit(){
   renderCashMini("#ck_cash");
 }
 function renderCashMini(elid){
-  const W=520,H=180,pad=30; let bal=F.tien_kha_dung; const bals=DB.cash13.map(c=>{bal+=c[0]-c[1];return bal;});
-  const mn=Math.min(...bals),mx=Math.max(...bals);
-  const bx=i=>pad+i*(W-2*pad)/12, ly=v=>pad+(1-(v-mn)/((mx-mn)||1))*(H-2*pad);
-  let line=bals.map((b,i)=>(i?"L":"M")+bx(i)+" "+ly(b)).join(" ");
-  $(elid).innerHTML=`<div class="svroll"><svg viewBox="0 0 ${W} ${H}" class="svgc"><path d="${line}" fill="none" stroke="#2e3192" stroke-width="2.5"/>
-    ${bals.map((b,i)=>`<circle cx="${bx(i)}" cy="${ly(b)}" r="2.5" fill="#2e3192"/>`).join("")}
-    ${bals.map((b,i)=>`<text x="${bx(i)}" y="${H-8}" text-anchor="middle" font-size="7.5" fill="#94a3b8">T${i+1}</text>`).join("")}</svg></div>
-    <div style="font-size:12px;color:var(--muted);margin-top:4px">Số dư cuối kỳ dự báo <b>${n2(bals[12])} tỷ</b>. Đáy vào giữa quý trước khi dịch vụ mới cho dòng thu.</div>`;
+  const rows=cashSeries(false,false); if(!rows.length){ $(elid).innerHTML=""; return; }
+  const W=520,H=180,pad=30, n=rows.length, nHist=rows.filter(r=>r.mode==="th").length;
+  const bals=rows.map(r=>r.bal);
+  const mn=Math.min(0,...bals),mx=Math.max(...bals);
+  const bx=i=>pad+i*(W-2*pad)/Math.max(n-1,1), ly=v=>pad+(1-(v-mn)/((mx-mn)||1))*(H-2*pad);
+  let lineTH="",lineKH="";
+  bals.forEach((b,i)=>{ const seg=(i?"L":"M")+bx(i)+" "+ly(b)+" ";
+    if(i<nHist){ lineTH+=seg; if(i===nHist-1) lineKH="M"+bx(i)+" "+ly(b)+" "; }
+    else lineKH+=(lineKH?"L":"M")+bx(i)+" "+ly(b)+" "; });
+  $(elid).innerHTML=`<div class="svroll"><svg viewBox="0 0 ${W} ${H}" class="svgc">
+    ${mn<0?`<line x1="${pad}" y1="${ly(0)}" x2="${W-pad}" y2="${ly(0)}" stroke="#d8584e" stroke-dasharray="3 3" opacity=".6"/>`:""}
+    <path d="${lineTH}" fill="none" stroke="#2e3192" stroke-width="2.5"/>
+    <path d="${lineKH}" fill="none" stroke="#2e3192" stroke-width="2.2" stroke-dasharray="6 4" opacity=".8"/>
+    ${bals.map((b,i)=>`<circle cx="${bx(i)}" cy="${ly(b)}" r="2.5" fill="${b<0?'#d8584e':'#2e3192'}"/>`).join("")}
+    ${rows.map((r,i)=>`<text x="${bx(i)}" y="${H-8}" text-anchor="middle" font-size="7.5" fill="${r.mode==='th'?'#16612f':'#94a3b8'}" font-weight="${r.mode==='th'?'800':'400'}">T${r.w.wk}</text>`).join("")}</svg></div>
+    <div style="font-size:12px;color:var(--muted);margin-top:4px">Liền = thực hiện · đứt = dự báo. Số dư cuối kỳ dự báo <b>${n2(bals[n-1])} tỷ</b>.</div>`;
 }
 
 /* ============ ĐIỀU HƯỚNG / VAI TRÒ ============ */
@@ -1373,18 +1605,57 @@ const applyWorkbook=(wb)=>{
     const rowsOf=n=>{ const ws=wb.Sheets[n]; if(!ws)return null;
       const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:null}).filter(r=>r&&r.some(c=>c!==null&&c!==""));
       return rows.slice(1); }; // bỏ dòng tiêu đề
+    const rawOf=n=>{ const ws=wb.Sheets[n]; if(!ws)return null;
+      return XLSX.utils.sheet_to_json(ws,{header:1,defval:null}).filter(r=>r&&r.some(c=>c!==null&&c!=="")); }; // giữ tiêu đề
+    // Ô ngày: chấp nhận chuỗi "25/5/2026" hoặc ô Excel dạng số serial
+    const fmtd=v=>{ if(v==null)return"";
+      if(typeof v==="number"&&XLSX.SSF){ const d=XLSX.SSF.parse_date_code(v); if(d)return d.d+"/"+d.m; }
+      if(v instanceof Date) return v.getDate()+"/"+(v.getMonth()+1);
+      return String(v).replace(/\/20\d\d$/,""); };
     const done=[];
     let r;
     if(r=rowsOf("TaiChinh")){ let k=0; r.forEach(row=>{ const ma=String(row[0]||"").trim();
       if(Object.prototype.hasOwnProperty.call(F,ma)){ const v=num(row[2]); if(v!=null){F[ma]=v;k++;} } });
       done.push(`Tài chính (${k} chỉ tiêu)`); }
-    if(r=rowsOf("DongTien")){ DB.cash13=r.slice(0,13).map(x=>[num(x[1])||0,num(x[2])||0]); done.push(`Dòng tiền 13 tuần (${DB.cash13.length} tuần)`); }
+    if(r=rawOf("DongTien")){
+      const hdr=(r[0]||[]).filter(c=>c!=null&&c!=="");
+      const body=r.slice(1);
+      if(hdr.length>=8){ // định dạng mới: rolling KH/TH + chi tiết hạng mục
+        DB.cashWeeks=body.map((x,i)=>{
+          const det=x.slice(8,18).some(v=>num(v)!=null)
+            ? {thu:[8,9,10,11].map(j=>num(x[j])||0), chi:[12,13,14,15,16,17].map(j=>num(x[j])||0)} : null;
+          return {wk:num(x[0])!=null?num(x[0]):(i+1), from:fmtd(x[1]), to:fmtd(x[2]),
+            khThu:num(x[3]), khChi:num(x[4]), thThu:num(x[5]), thChi:num(x[6]), bal:num(x[7]),
+            det, note:String(x[18]||"")};
+        });
+        const nTH=DB.cashWeeks.filter(hasTH).length;
+        done.push(`Dòng tiền theo tuần (${DB.cashWeeks.length} tuần, ${nTH} tuần đã có thực hiện)`);
+      } else { // định dạng cũ 3 cột: coi toàn bộ là dự báo
+        DB.cashWeeks=body.slice(0,13).map((x,i)=>({wk:i+1, from:"", to:"", khThu:num(x[1])||0, khChi:num(x[2])||0,
+          thThu:null, thChi:null, bal:null, det:null, note:""}));
+        done.push(`Dòng tiền 13 tuần (định dạng cũ — chỉ dự báo)`);
+      }
+      CASH_SEL=null;
+    }
     if(r=rowsOf("TuoiNo")){ DB.aging=r.map(x=>({n:String(x[0]||""), b:[num(x[1])||0,num(x[2])||0,num(x[3])||0,num(x[4])||0]})); done.push(`Tuổi nợ (${DB.aging.length} khoản)`); }
     if(r=rowsOf("CongNo")){ DB.keydebts=r.map(x=>({n:String(x[0]||""), v:num(x[1])||0, note:String(x[2]||""), rag:String(x[3]||"a").trim().toLowerCase(), tr:String(x[4]||"")})); done.push(`Công nợ trọng điểm (${DB.keydebts.length})`); }
-    if(r=rowsOf("TienDo")){ DB.plan=r.map(x=>{ let s=num(x[2])||0,e2=num(x[3])||0,p=num(x[4])||0;
-      if(s>1)s/=100; if(e2>1)e2/=100;
-      return {t:String(x[0]||""), d:String(x[1]||"TH"), s, e:e2, p:Math.round(p), crit:/^(x|1|true|có|co)$/i.test(String(x[5]||"").trim())}; });
-      done.push(`Tiến độ KH (${DB.plan.length} đầu việc)`); }
+    if(r=rawOf("TienDo")){
+      const hdr=r[0]||[]; const body=r.slice(1);
+      const isTree=/^m[aã]/i.test(String(hdr[0]||"").trim()); // cột đầu = "Mã" → định dạng cha–con
+      const pct=v=>{ let x=num(v); if(x==null)return null; if(x>1)x/=100; return x; };
+      if(isTree){
+        DB.plan=body.map(x=>({ma:String(x[0]||"").trim(), t:String(x[1]||""), d:String(x[2]||"TH"),
+          s:pct(x[3]), e:pct(x[4]), p:num(x[5])==null?null:Math.round(num(x[5])),
+          crit:/^(x|1|true|có|co)$/i.test(String(x[6]||"").trim())}));
+      } else { // định dạng cũ: danh sách phẳng, tên việc ở cột đầu
+        DB.plan=body.map((x,i)=>({ma:String(i+1), t:String(x[0]||""), d:String(x[1]||"TH"),
+          s:pct(x[2])||0, e:pct(x[3])||0, p:Math.round(num(x[4])||0),
+          crit:/^(x|1|true|có|co)$/i.test(String(x[5]||"").trim())}));
+      }
+      computePlanRollups(); PLANCLOSED=new Set();
+      const nLeaf=DB.plan.filter(t=>t.leaf).length;
+      done.push(`Tiến độ KH (${nLeaf} đầu việc${DB.plan.length>nLeaf?` / ${DB.plan.length-nLeaf} nhóm cha`:""})`);
+    }
     if(r=rowsOf("QuyetDinh")){ const g={wait:[],doing:[],done:[]};
       r.forEach(x=>{ const nh=String(x[0]||"").toLowerCase();
         const k=nh.includes("chờ")||nh.includes("cho")?"wait":(nh.includes("đang")||nh.includes("dang")?"doing":"done");
@@ -1402,7 +1673,7 @@ $("#xlsxfile").onchange=e=>{ const f=e.target.files[0]; if(!f)return;
     const wb=XLSX.read(ev.target.result,{type:"array"});
     const done=applyWorkbook(wb);
     if(done.length){ refreshAll(); alert("Đã cập nhật dashboard từ Excel:\n• "+done.join("\n• ")); }
-    else alert("Không tìm thấy sheet dữ liệu nào.\nFile mẫu cần các sheet: TaiChinh, DongTien, TuoiNo, CongNo, TienDo, QuyetDinh, RuiRo, DichVu, TuanThu (xem file 'Du lieu Dashboard PVEP SH.xlsx' kèm theo dashboard).");
+    else alert("Không tìm thấy sheet dữ liệu nào.\nFile mẫu cần các sheet: TaiChinh, DongTien (mỗi tuần 1 dòng, KH/TH), TuoiNo, CongNo, TienDo (cột Mã cha–con), QuyetDinh, RuiRo, DichVu, TuanThu — xem sheet HuongDan trong file 'Du lieu Dashboard PVEP SH.xlsx'.");
   }catch(err){ alert("Không đọc được file: "+err.message); } };
   rd.readAsArrayBuffer(f);
   e.target.value="";
@@ -1435,6 +1706,7 @@ $("#updated").textContent="Cập nhật: "+dt(DB.asof);
 // blink keyframe cho đường găng
 const stl=document.createElement("style"); stl.textContent="@keyframes blinkc{0%,100%{outline-color:#dc2626}50%{outline-color:#fca5a5}}"; document.head.appendChild(stl);
 
+computePlanRollups();
 refreshAll();
 </script>
 </body>
