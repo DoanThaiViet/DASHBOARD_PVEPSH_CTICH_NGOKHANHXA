@@ -1366,10 +1366,8 @@ $("#pbiclear").onclick=()=>{ localStorage.removeItem("pvepsh_pbi"); $("#pbiurl")
 // asof
 $("#asof").onchange=e=>{ DB.asof=e.target.value; $("#updated").textContent="Cập nhật: "+dt(DB.asof); refreshAll(); };
 // excel import (khung nhiều sheet)
-$("#updxlsx").onclick=()=>$("#xlsxfile").click();
-$("#xlsxfile").onchange=e=>{ const f=e.target.files[0]; if(!f)return;
-  const rd=new FileReader(); rd.onload=ev=>{ try{
-    const wb=XLSX.read(ev.target.result,{type:"array"});
+// Hàm dùng chung: nạp dữ liệu từ 1 workbook (wb) đã parse bằng XLSX.read vào DB/F
+const applyWorkbook=(wb)=>{
     const num=v=>{ if(typeof v==="number")return v; if(v==null||v==="")return null;
       const x=parseFloat(String(v).trim().replace(/\s/g,"").replace(",",".")); return isNaN(x)?null:x; };
     const rowsOf=n=>{ const ws=wb.Sheets[n]; if(!ws)return null;
@@ -1395,12 +1393,43 @@ $("#xlsxfile").onchange=e=>{ const f=e.target.files[0]; if(!f)return;
     if(r=rowsOf("RuiRo")){ DB.risks=r.map(x=>({id:num(x[0])||0, n:String(x[1]||""), l:num(x[2])||3, i:num(x[3])||3, k:String(x[4]||"")})); done.push(`Rủi ro (${DB.risks.length})`); }
     if(r=rowsOf("DichVu")){ DB.segments=r.map(x=>({n:String(x[0]||""), rev:num(x[1])||0, margin:num(x[2])||0, growth:num(x[3])||0, gv:num(x[4])||0})); done.push(`Dịch vụ (${DB.segments.length} mảng)`); }
     if(r=rowsOf("TuanThu")){ DB.compliance=r.map(x=>({n:String(x[0]||""), v:String(x[1]||""), rag:String(x[2]||"a").trim().toLowerCase()})); done.push(`Tuân thủ (${DB.compliance.length})`); }
+    return done;
+};
+
+$("#updxlsx").onclick=()=>$("#xlsxfile").click();
+$("#xlsxfile").onchange=e=>{ const f=e.target.files[0]; if(!f)return;
+  const rd=new FileReader(); rd.onload=ev=>{ try{
+    const wb=XLSX.read(ev.target.result,{type:"array"});
+    const done=applyWorkbook(wb);
     if(done.length){ refreshAll(); alert("Đã cập nhật dashboard từ Excel:\n• "+done.join("\n• ")); }
     else alert("Không tìm thấy sheet dữ liệu nào.\nFile mẫu cần các sheet: TaiChinh, DongTien, TuoiNo, CongNo, TienDo, QuyetDinh, RuiRo, DichVu, TuanThu (xem file 'Du lieu Dashboard PVEP SH.xlsx' kèm theo dashboard).");
   }catch(err){ alert("Không đọc được file: "+err.message); } };
   rd.readAsArrayBuffer(f);
   e.target.value="";
 };
+
+// Tự động nạp dữ liệu từ file Excel trong repo khi mở trang.
+// Chỉ chạy được khi trang được phục vụ qua http/https (VD GitHub Pages) —
+// trình duyệt sẽ chặn fetch() nếu mở trực tiếp file index.html từ ổ đĩa (file://).
+// Nếu fetch lỗi (chưa có file, offline, mở local...), dashboard vẫn hiển thị bình thường
+// với dữ liệu mặc định đã nhúng sẵn, không làm hỏng trang.
+const EXCEL_SOURCE_URL="Du lieu Dashboard PVEP SH.xlsx";
+fetch(EXCEL_SOURCE_URL,{cache:"no-store"})
+  .then(res=>{ if(!res.ok) throw new Error("HTTP "+res.status); return res.arrayBuffer(); })
+  .then(buf=>{
+    const wb=XLSX.read(buf,{type:"array"});
+    const done=applyWorkbook(wb);
+    if(done.length){
+      refreshAll();
+      $("#updated").textContent="Cập nhật: "+dt(DB.asof)+" · đã đồng bộ tự động từ "+EXCEL_SOURCE_URL;
+      console.info("[Auto-load] Đã nạp từ repo:",done);
+    } else {
+      console.warn("[Auto-load] File Excel trong repo không có sheet hợp lệ — giữ dữ liệu mặc định.");
+    }
+  })
+  .catch(err=>{
+    console.warn("[Auto-load] Không nạp được '"+EXCEL_SOURCE_URL+"' — giữ dữ liệu mặc định. Lý do:",err.message);
+  });
 $("#updated").textContent="Cập nhật: "+dt(DB.asof);
 
 // blink keyframe cho đường găng
