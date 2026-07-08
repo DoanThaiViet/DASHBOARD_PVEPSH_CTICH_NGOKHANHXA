@@ -502,7 +502,59 @@
   .glabel.gparentlbl{font-weight:800}
   .gbar.gparent{background:transparent!important;box-shadow:none;height:15px;top:3px;border-radius:5px}
   .gbar.gparent i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;opacity:.22}
+  .gbar.gparent .gpct{position:absolute;right:4px;top:50%;transform:translateY(-50%);font-size:8.5px;white-space:nowrap;text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 3px #fff}
+  .gbaract .gpct.out{left:calc(100% + 4px);right:auto;color:#475569;text-shadow:none;font-weight:800}
   @media (max-width:820px){ .cdet-row{grid-template-columns:110px 1fr 62px} .cwtable{font-size:10.5px} }
+  /* ===== Doanh thu vs KH ===== */
+  .rvtree td:first-child{text-align:left;white-space:normal;min-width:230px}
+  .rvtree tr.rvparent td{background:#eef4fb;font-weight:800}
+  .rvtree .rvbar{display:inline-block;vertical-align:middle;width:90px;height:9px;background:#f1f5f9;border-radius:5px;overflow:hidden;margin-right:6px}
+  .rvtree .rvbar i{display:block;height:100%;border-radius:5px}
+  /* ===== Modal ===== */
+  .modalov{position:fixed;inset:0;background:rgba(8,18,38,.55);z-index:300;display:flex;align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(2px)}
+  .modalbox{background:#fff;border-radius:14px;max-width:820px;width:100%;max-height:84vh;overflow:auto;padding:20px 24px;box-shadow:0 24px 70px rgba(10,25,50,.35)}
+  .modalbox h3{font-size:16px;color:var(--navy);margin-bottom:4px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .modalbox .mclose{border:none;background:#eef2f7;border-radius:8px;width:28px;height:28px;cursor:pointer;font-size:14px;font-weight:800;color:var(--muted);flex:none}
+  .clickable{cursor:pointer}
+  .clickable:hover{box-shadow:0 6px 20px rgba(20,40,80,.12)}
+  /* ===== Chế độ Khách ===== */
+  body.guest-mode nav.tabs, body.guest-mode section.view, body.guest-mode footer,
+  body.guest-mode #updxlsx, body.guest-mode .asof, body.guest-mode #updated{display:none!important}
+  body.guest-mode #guest{display:block!important}
+  .gst-hero{background:linear-gradient(135deg,var(--navy),#00552e);color:#fff;border-radius:16px;padding:44px 40px;margin-bottom:20px}
+  .gst-kicker{font-size:11.5px;font-weight:800;letter-spacing:1.6px;color:#9fd4b3;margin-bottom:10px}
+  .gst-hero h2{font-size:32px;line-height:1.2;max-width:640px;margin-bottom:12px}
+  .gst-hero p{font-size:14.5px;color:#d9e9de;max-width:660px;line-height:1.65}
+  .gst-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+  .gst-card{background:var(--card,#fff);border:1px solid var(--line);border-radius:14px;padding:20px 18px}
+  .gst-card .ico{font-size:26px;margin-bottom:10px}
+  .gst-card h3{font-size:14.5px;color:var(--navy);margin-bottom:7px}
+  .gst-card p{font-size:12.5px;color:var(--muted);line-height:1.6}
+  .gst-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+  .gst-strip>div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center}
+  .gst-strip b{display:block;font-size:26px;color:var(--green);font-weight:900}
+  .gst-strip span{font-size:11.5px;color:var(--muted)}
+  .gst-contact{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;text-align:center}
+  .gst-contact h3{color:var(--navy);margin-bottom:8px}
+  .gst-contact p{font-size:13px;color:var(--ink)}
+  .gst-note{margin-top:8px;font-size:11px!important;color:var(--muted)!important}
+  .gst-hero{display:flex;align-items:center;gap:34px;justify-content:space-between}
+  .gst-hero-l{flex:1;min-width:0}
+  .gst-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+  .gst-chips span{font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);color:#cfe7d7}
+  .gst-score{flex:none;text-align:center}
+  .gst-score .ringlbl{font-size:10.5px;font-weight:800;letter-spacing:1px;color:#9fd4b3;margin-top:6px;text-transform:uppercase}
+  .gst-score circle.val{transition:stroke-dashoffset 1.2s cubic-bezier(.22,.8,.3,1)}
+  .gst-strip b{font-variant-numeric:tabular-nums}
+  .gst-wow{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+  .gst-wow h3{font-size:13px;color:var(--navy);margin-bottom:10px}
+  .gst-heritage{margin-bottom:20px}
+  .gst-heritage h3{font-size:14px;color:var(--navy);margin-bottom:14px}
+  .gst-tl{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .gst-tl>div{border-top:3px solid var(--green);padding-top:10px}
+  .gst-tl b{display:block;font-size:18px;color:var(--navy);font-weight:900;margin-bottom:4px}
+  .gst-tl span{font-size:11.5px;color:var(--muted);line-height:1.55}
+  @media (max-width:820px){ .gst-grid{grid-template-columns:1fr} .gst-strip{grid-template-columns:repeat(2,1fr)} .gst-hero{padding:28px 20px;flex-direction:column;align-items:flex-start} .gst-hero h2{font-size:23px} .gst-wow{grid-template-columns:1fr} .gst-tl{grid-template-columns:1fr 1fr} }
 </style>
 </head>
 <body>
@@ -523,6 +575,7 @@
       <div class="roleswitch" id="roleswitch">
         <button data-role="cv" class="active">Chuyên viên</button>
         <button data-role="ld">Lãnh đạo</button>
+        <button data-role="guest" title="Trang giới thiệu dịch vụ cho khách — ẩn toàn bộ số liệu nội bộ">Khách</button>
       </div>
       <div class="asof">
         <label>Ngày chốt số:</label>
@@ -537,6 +590,7 @@
     <button data-v="cash"><span class="tico">💧</span><span class="tfull">Dòng tiền &amp; Thanh khoản</span><span class="tshort">Dòng tiền</span></button>
     <button data-v="debt"><span class="tico">🧊</span><span class="tfull">Công nợ &amp; Vốn bị đọng</span><span class="tshort">Công nợ</span></button>
     <button data-v="plan"><span class="tico">📊</span><span class="tfull">Tiến độ KH SXKD 2026</span><span class="tshort">Tiến độ</span></button>
+    <button data-v="revenue"><span class="tico">💹</span><span class="tfull">Doanh thu vs Kế hoạch</span><span class="tshort">Doanh thu</span></button>
     <button data-v="risk"><span class="tico">🎯</span><span class="tfull">Dịch vụ &amp; Rủi ro</span><span class="tshort">Rủi ro</span></button>
     <button data-v="fin"><span class="tico">📈</span><span class="tfull">Tài chính (Power BI)</span><span class="tshort">Tài chính</span></button>
   </div>
@@ -555,8 +609,8 @@
         <div class="ctitle">⛽ Đồng hồ thanh khoản <small>· tiền khả dụng còn đủ chi bao nhiêu tuần (đã loại 28 tỷ phong tỏa)</small></div>
         <div class="gaugewrap" id="gauge"></div>
       </div>
-      <div class="card">
-        <div class="ctitle">⏳ Mục tiêu xóa lỗ lũy kế đến 2029 <small>· lộ trình thoát diện giám sát đặc biệt</small></div>
+      <div class="card clickable" onclick="showLossPlan()" title="Bấm để xem kế hoạch xóa lỗ (KH HĐTV giao + KH quản trị) & tình hình thực hiện">
+        <div class="ctitle">⏳ Mục tiêu xóa lỗ lũy kế đến 2029 <small>· lộ trình thoát diện giám sát đặc biệt · <b style="color:var(--navy)">bấm để xem kế hoạch chi tiết</b></small></div>
         <div id="lossjourney"></div>
       </div>
     </div>
@@ -668,6 +722,26 @@
     </div>
   </section>
 
+  <!-- DOANH THU VS KẾ HOẠCH -->
+  <section class="view" id="revenue">
+    <h2 class="sec">Doanh thu — thực hiện vs Kế hoạch 2026 <span class="tag" id="revtag">KH HĐTV giao · KH quản trị · BCTC · đến nay</span></h2>
+    <div class="grid kpis" id="revkpis" style="grid-template-columns:repeat(5,1fr)"></div>
+    <div class="card" style="margin-bottom:18px">
+      <div class="ctitle">💹 Doanh thu theo dịch vụ (cha–con) <small>· bấm ▾ để thu gọn nhóm · đơn vị: tỷ đồng · dòng cha tự cộng từ dịch vụ con</small></div>
+      <div style="overflow-x:auto" id="revtable"></div>
+    </div>
+    <div class="grid two">
+      <div class="card">
+        <div class="ctitle">🧭 Khoảng cách tới kế hoạch <small>· % thời gian đã trôi vs % doanh thu đã đạt</small></div>
+        <div id="revgap"></div>
+      </div>
+      <div class="card">
+        <div class="ctitle">🛠️ Việc cần triển khai để bù đắp <small>· nếu giữ nhịp hiện tại sẽ hụt KH — sheet BuDap</small></div>
+        <div id="revcatchup"></div>
+      </div>
+    </div>
+  </section>
+
   <!-- DỊCH VỤ & RỦI RO -->
   <section class="view" id="risk">
     <h2 class="sec">Hiệu quả dịch vụ &amp; Quản trị rủi ro <span class="tag">quyết định danh mục</span></h2>
@@ -715,7 +789,60 @@
     </div>
   </section>
 
+  <!-- CHẾ ĐỘ KHÁCH — trang giới thiệu, KHÔNG chứa số liệu nội bộ (các chỉ số là số giới thiệu minh họa) -->
+  <section id="guest" style="display:none">
+    <div class="gst-hero">
+      <div class="gst-hero-l">
+        <div class="gst-kicker">CÔNG TY DẦU KHÍ SÔNG HỒNG · THÀNH VIÊN PVEP — PETROVIETNAM</div>
+        <h2>Đối tác dịch vụ tin cậy của ngành Dầu khí</h2>
+        <p>Từ cái nôi của ngành Dầu khí Việt Nam tại Thái Bình — nơi đón dòng khí công nghiệp đầu tiên của đất nước —
+        PVEP Sông Hồng cung cấp chuỗi dịch vụ kỹ thuật, hỗ trợ sản xuất và thương mại cho các đơn vị trong và ngoài ngành.</p>
+        <div class="gst-chips"><span>Petrovietnam</span><span>PVEP</span><span>PVOil</span><span>PVPower</span><span>Đối tác quốc tế</span></div>
+      </div>
+      <div class="gst-score" id="gstScore"></div>
+    </div>
+    <div class="gst-strip" id="gstCounters">
+      <div data-val="60" data-suf="+"><b>0</b><span>năm di sản ngành dầu khí (từ 1961)</span></div>
+      <div data-val="100" data-suf="+"><b>0</b><span>dự án &amp; hợp đồng đã phục vụ</span></div>
+      <div data-val="98" data-suf="%"><b>0</b><span>giao đúng cam kết tiến độ</span></div>
+      <div data-val="0" data-suf=""><b>0</b><span>sự cố HSE nghiêm trọng</span></div>
+    </div>
+    <div class="gst-grid">
+      <div class="gst-card"><div class="ico">🛢️</div><h3>Dịch vụ kỹ thuật dầu khí</h3>
+        <p>Dịch vụ CCS (thu giữ – lưu trữ carbon), minh giải &amp; nhập liệu tài liệu G&amp;G/ITC, hỗ trợ thử vỉa và can thiệp giếng.</p></div>
+      <div class="gst-card"><div class="ico">🚢</div><h3>Hỗ trợ sản xuất &amp; XNK</h3>
+        <p>Dịch vụ thẻ xuống tàu, thủ tục hải quan, xuất nhập khẩu ủy thác và hậu cần cho hoạt động dầu khí.</p></div>
+      <div class="gst-card"><div class="ico">⚡</div><h3>Thương mại &amp; phân phối</h3>
+        <p>Cung cấp than cho nhà máy điện, vật tư MMO, kinh doanh xăng dầu — hợp tác cùng PVOil, PVPower.</p></div>
+      <div class="gst-card"><div class="ico">🎪</div><h3>Sự kiện &amp; truyền thông</h3>
+        <p>Tổ chức sự kiện, hội nghị, hoạt động truyền thông cho các đơn vị trong ngành năng lượng.</p></div>
+      <div class="gst-card"><div class="ico">🏛️</div><h3>Khu lưu niệm ngành Dầu khí Thái Bình</h3>
+        <p>Quản lý, vận hành khu lưu niệm nơi ra đời dòng khí công nghiệp đầu tiên của Việt Nam (giếng 61, Tiền Hải).</p></div>
+      <div class="gst-card"><div class="ico">🤝</div><h3>Vì sao chọn chúng tôi</h3>
+        <p>Hệ sinh thái Petrovietnam/PVEP · đội ngũ am hiểu kỹ thuật E&amp;P · quy trình quản trị rủi ro &amp; tuân thủ chặt chẽ.</p></div>
+    </div>
+    <div class="gst-wow">
+      <div class="gst-card"><h3>📊 Điểm năng lực dịch vụ</h3><div id="gstRadar"></div></div>
+      <div class="gst-card"><h3>💚 Mức độ hài lòng khách hàng</h3><div id="gstDonut"></div></div>
+      <div class="gst-card"><h3>📈 Chỉ số quy mô dịch vụ (2022 = 100)</h3><div id="gstGrowth"></div></div>
+    </div>
+    <div class="gst-card gst-heritage">
+      <h3>🏛 Di sản — nơi khởi nguồn ngành Dầu khí Việt Nam</h3>
+      <div class="gst-tl">
+        <div><b>1961</b><span>Đoàn thăm dò dầu lửa 36 — khởi đầu tìm kiếm dầu khí tại đồng bằng sông Hồng</span></div>
+        <div><b>1975</b><span>Phát hiện khí thiên nhiên tại Tiền Hải, Thái Bình</span></div>
+        <div><b>1981</b><span>Dòng khí công nghiệp ĐẦU TIÊN của Việt Nam — giếng 61, mỏ Tiền Hải C</span></div>
+        <div><b>Hôm nay</b><span>Thành viên PVEP — cung cấp chuỗi dịch vụ kỹ thuật &amp; thương mại toàn ngành</span></div>
+      </div>
+    </div>
+    <div class="gst-contact">
+      <h3>Liên hệ hợp tác</h3>
+      <p>📍 [Địa chỉ trụ sở — Thái Bình / Hà Nội] &nbsp;·&nbsp; ☎ [Điện thoại] &nbsp;·&nbsp; ✉ [Email liên hệ]</p>
+      <p class="gst-note">Trang giới thiệu đối ngoại — không chứa số liệu nội bộ. Các chỉ số năng lực/hài lòng/tăng trưởng là số giới thiệu minh họa; ô [●] chờ Công ty cập nhật thông tin chính thức.</p>
+    </div>
+  </section>
 </div>
+<div class="modalov" id="modal" style="display:none"><div class="modalbox" id="modalbox"></div></div>
 <div class="tip" id="tip"></div>
 <footer>Nguồn: Báo cáo KSV Quý I/2026 · Báo cáo tài chính Quý I/2026 (kiểm toán) · Báo cáo cung cấp dịch vụ Q1 &amp; KH Q2/2026 · Hồ sơ rủi ro Ban KSNB — số liệu tại <b>31/3/2026</b>. Dashboard mang tính điều hành; khi vận hành số liệu tự cập nhật theo kỳ báo cáo &amp; Power BI. · <b>CÔNG TY DẦU KHÍ SÔNG HỒNG (PVEP SH)</b></footer>
 
@@ -854,6 +981,49 @@ const DB = {
     {n:"Văn bản QLNB then chốt", v:"Chưa ban hành (DV, dòng tiền, QTRR, khoán)", rag:"r"},
     {n:"Diện giám sát tài chính đặc biệt", v:"QĐ 2259/QĐ-TDKT — mục tiêu thoát 2029", rag:"a"},
     {n:"Điều kiện cổ phần hóa", v:"Từ 2030 (QĐ 1566/QĐ-TDKT)", rag:"b"},
+  ],
+  // Doanh thu uptodate theo dịch vụ (sheet DoanhThu) — cha–con theo Mã.
+  // hdtv = KH được HĐTV giao (năm, tỷ) · qt = KH quản trị · bctc = TH theo BCTC (lũy kế quý gần nhất) · tt = TH thực tế đến nay.
+  // Dòng cha để null — tự CỘNG từ con. SỐ MINH HỌA — thay bằng số thật trong sheet DoanhThu.
+  revenue: [
+    {ma:"1",   t:"Thương mại & phân phối (than, MMO, xăng dầu)", hdtv:null, qt:null, bctc:null, tt:null, note:""},
+    {ma:"1.1", t:"Kinh doanh than (PVPower)", hdtv:1200, qt:1220, bctc:0, tt:0, note:"Chờ GP & HĐ — dự kiến từ cuối T6/2026"},
+    {ma:"1.2", t:"Cung cấp MMO (PVOil)", hdtv:500, qt:510, bctc:0, tt:0, note:"Chờ ký hợp đồng"},
+    {ma:"1.3", t:"Kinh doanh xăng dầu", hdtv:200, qt:205, bctc:0, tt:0, note:"Chờ giấy phép + thuê cửa hàng"},
+    {ma:"2",   t:"Dịch vụ kỹ thuật", hdtv:null, qt:null, bctc:null, tt:null, note:""},
+    {ma:"2.1", t:"Dịch vụ CCS", hdtv:25, qt:27, bctc:0.4, tt:1.1, note:""},
+    {ma:"2.2", t:"G&G / nhập liệu ITC", hdtv:20, qt:21, bctc:1.2, tt:2.4, note:""},
+    {ma:"2.3", t:"HWU / thử vỉa", hdtv:15, qt:15, bctc:0, tt:0, note:"Chờ chủ trương đầu tư"},
+    {ma:"3",   t:"Hỗ trợ sản xuất & XNK", hdtv:40, qt:42, bctc:6.3, tt:9.6, note:""},
+    {ma:"4",   t:"Tổ chức sự kiện & truyền thông", hdtv:16, qt:17, bctc:3.1, tt:4.9, note:"Mảng biên thấp — đang thu hẹp"},
+    {ma:"5",   t:"Khu lưu niệm Thái Bình & khác", hdtv:8, qt:8.5, bctc:0.78, tt:1.4, note:""},
+  ],
+  // Việc cần triển khai để bù đắp nếu hụt kế hoạch (sheet BuDap). gain = tác động dự kiến (tỷ).
+  catchup: [
+    {t:"Đẩy nhanh GP xăng dầu + bổ sung ngành nghề để bán than/MMO từ T7 (thay vì T9)", seg:"Thương mại", gain:250, due:"31/7/2026", rag:"r", note:"Nút thắt lớn nhất của KH năm"},
+    {t:"Ký sớm HĐ than PVPower — chốt khối lượng Quý 3–4", seg:"Thương mại", gain:180, due:"15/8/2026", rag:"a", note:""},
+    {t:"Chốt 2 hợp đồng CCS đang đàm phán", seg:"DV kỹ thuật", gain:8, due:"30/9/2026", rag:"a", note:""},
+    {t:"Tăng kíp nhập liệu ITC (thêm 1 ca)", seg:"DV kỹ thuật", gain:3, due:"31/8/2026", rag:"g", note:""},
+    {t:"Thu hẹp mảng sự kiện biên thấp, dồn nhân lực sang DV kỹ thuật", seg:"Danh mục", gain:2, due:"30/9/2026", rag:"a", note:"Tác động vào lợi nhuận nhiều hơn doanh thu"},
+  ],
+  // Kế hoạch xóa lỗ lũy kế đến 2029 (sheet XoaLo). loai: HĐTV = KH được HĐTV giao · QT = KH quản trị.
+  lossplan: [
+    {t:"Xử lý dứt điểm lỗ lũy kế trước 31/12/2029", loai:"HĐTV", moc:"31/12/2029", st:"Đã xử lý 1,82/19,15 tỷ (~9%)", rag:"a"},
+    {t:"Không phát sinh lỗ mới từ 2026", loai:"HĐTV", moc:"Hằng năm", st:"Quý I/2026 lãi +0,29 tỷ", rag:"g"},
+    {t:"Hoàn thành KH doanh thu & lợi nhuận 2026", loai:"HĐTV", moc:"31/12/2026", st:"Mới đạt ~0,6% KH doanh thu năm", rag:"r"},
+    {t:"Thoát diện giám sát tài chính đặc biệt (QĐ 2259)", loai:"HĐTV", moc:"2029", st:"Đang trong diện giám sát", rag:"a"},
+    {t:"Giải tỏa 28 tỷ tiền gửi phong tỏa MBV", loai:"QT", moc:"2026–2027", st:"~10% — bám lộ trình Petrovietnam", rag:"r"},
+    {t:"Thu hồi ~30 tỷ tạm ứng DAĐH & thanh lý HĐ điều hành", loai:"QT", moc:"31/12/2026", st:"~15% — P.TCKT chủ trì", rag:"r"},
+    {t:"Xử lý công nợ ZJ15 + trích lập bổ sung 2,5 tỷ", loai:"QT", moc:"30/6/2026", st:"~40% — theo ý kiến kiểm toán", rag:"a"},
+    {t:"Tái cơ cấu danh mục dịch vụ (thu hẹp sự kiện, tăng kỹ thuật)", loai:"QT", moc:"31/12/2026", st:"~25% — đang dịch chuyển", rag:"a"},
+    {t:"Tiết giảm chi phí quản lý doanh nghiệp ≥ 10%", loai:"QT", moc:"Hằng năm", st:"Đang rà soát định mức", rag:"a"},
+  ],
+  // Lộ trình xóa lỗ theo năm (sheet XoaLoNam) — chỉ tiêu DT/LN từng năm để xóa hết lỗ 2029. SỐ MINH HỌA.
+  lossyears: [
+    {y:"2026", dt:2024, ln_hdtv:2.0, ln_qt:2.5, lo_conlai:15.3, th:"Quý I lãi +0,29 tỷ (~15% KH LN năm)", rag:"a"},
+    {y:"2027", dt:2300, ln_hdtv:4.5, ln_qt:5.0, lo_conlai:10.8, th:"", rag:"b"},
+    {y:"2028", dt:2500, ln_hdtv:5.5, ln_qt:6.0, lo_conlai:5.3, th:"", rag:"b"},
+    {y:"2029", dt:2600, ln_hdtv:5.5, ln_qt:6.0, lo_conlai:0, th:"Xóa hết lỗ — đủ điều kiện cổ phần hóa 2030", rag:"b"},
   ]
 };
 
@@ -1121,9 +1291,11 @@ function renderCash(){
   let divider="";
   if(nHist>0 && nHist<n){
     const dx=(bx(nHist-1)+bx(nHist))/2;
-    divider=`<line x1="${dx}" y1="${pad-8}" x2="${dx}" y2="${H-pad}" stroke="var(--navy)" stroke-dasharray="5 3" stroke-width="1.4" opacity=".65"/>
-    <text x="${dx-4}" y="${pad}" text-anchor="end" font-size="8.5" fill="var(--navy)" font-weight="800">◂ thực hiện</text>
-    <text x="${dx+4}" y="${pad}" font-size="8.5" fill="#94a3b8" font-weight="700">dự báo ▸</text>`;
+    // nhãn đặt sát đáy vùng vẽ + viền trắng để không díu vào chú thích trục/cột
+    const halo='stroke="#fff" stroke-width="3" style="paint-order:stroke" ';
+    divider=`<line x1="${dx}" y1="${pad+6}" x2="${dx}" y2="${H-pad}" stroke="var(--navy)" stroke-dasharray="5 3" stroke-width="1.4" opacity=".65"/>
+    <text x="${dx-4}" y="${H-pad-5}" text-anchor="end" font-size="8.5" fill="var(--navy)" font-weight="800" ${halo}>◂ thực hiện</text>
+    <text x="${dx+4}" y="${H-pad-5}" font-size="8.5" fill="#64748b" font-weight="700" ${halo}>dự báo ▸</text>`;
   }
   const anyNeg=rows.some(b=>b.bal<0);
   $("#cashchart").innerHTML=`<div class="svroll"><svg viewBox="0 0 ${W} ${H}" class="svgc" id="cashsvg">
@@ -1323,10 +1495,11 @@ function renderPlan(){
     const indent=(t.lvl-1)*15;
     const caret=t.leaf?`<span class="gcaret" style="opacity:.25">·</span>`
       :`<span class="gcaret" data-ma="${t.ma}">${PLANCLOSED.has(t.ma)?"▸":"▾"}</span>`;
+    const tiny = t.p===0 || actW<9; // thanh quá hẹp → đưa nhãn % ra ngoài, tránh chữ bị cắt
     const bar = t.leaf
       ? `<div class="gbar plan" style="left:${x1}%;width:${w}%;background:${deptColor(t.d)}" ${crit}></div>
-         <div class="gbaract ${t.p===0?'zero':''}" style="left:${x1}%;width:${t.p===0?'6px':actW+'%'};background:${col}"><span class="gpct">${t.p}%</span></div>`
-      : `<div class="gbar gparent" style="left:${x1}%;width:${w}%;border:2px solid ${deptColor(t.d)}" ${crit}><i style="width:${t.p}%;background:${deptColor(t.d)}"></i><span class="gpct" style="color:${deptColor(t.d)};font-weight:800">${t.p}%</span></div>`;
+         <div class="gbaract ${t.p===0?'zero':''}" style="left:${x1}%;width:${t.p===0?'6px':actW+'%'};background:${col}"><span class="gpct${tiny?' out':''}">${t.p}%</span></div>`
+      : `<div class="gbar gparent" style="left:${x1}%;width:${w}%;border:2px solid ${deptColor(t.d)};overflow:visible" ${crit}><i style="width:${t.p}%;background:${deptColor(t.d)}"></i><span class="gpct" style="color:${deptColor(t.d)};font-weight:800">${t.p}%</span></div>`;
     return `<div class="grow${t.leaf?"":" pinit"}" title="${t.ma} · ${t.t}">
       <div class="glabel${t.leaf?"":" gparentlbl"}" style="padding-left:${10+indent}px">${caret}<span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${deptColor(t.d)};margin-right:6px"></span><span style="color:#94a3b8;font-size:10px;margin-right:4px">${t.ma}</span>${t.t} <b style="color:${deptColor(t.d)};font-size:10px">[${t.d}]</b></div>
       <div class="gtrack"><div class="qgrid">${[0,1,2,3].map(()=>`<div class="qcell yr"></div>`).join("")}</div>
@@ -1473,6 +1646,177 @@ function renderCompliance(){
   $("#compliance").innerHTML = DB.compliance.map(c=>`<div class="kv"><span>${c.n}</span><span class="badge ${c.rag}" style="white-space:normal;text-align:right;max-width:230px">${c.v}</span></div>`).join("");
 }
 
+/* ============ DOANH THU VS KẾ HOẠCH (sheet DoanhThu) ============ */
+function computeRevRollups(){
+  const P=DB.revenue;
+  P.forEach((t,i)=>{ t.ma=String(t.ma!=null&&t.ma!==""?t.ma:(i+1)).trim(); t.lvl=t.ma.split(".").length; });
+  P.forEach(t=>{ t.leaf=!P.some(o=>o!==t && o.ma.startsWith(t.ma+".")); });
+  const maxL=Math.max(...P.map(t=>t.lvl));
+  for(let L=maxL-1;L>=1;L--){
+    P.filter(t=>t.lvl===L && !t.leaf).forEach(t=>{
+      const kids=P.filter(o=>o.lvl===L+1 && o.ma.startsWith(t.ma+"."));
+      ["hdtv","qt","bctc","tt"].forEach(k=>{ if(t[k]==null) t[k]=kids.reduce((a,o)=>a+(o[k]||0),0); });
+    });
+  }
+  P.forEach(t=>{ ["hdtv","qt","bctc","tt"].forEach(k=>{ if(t[k]==null)t[k]=0; }); });
+}
+function yearFrac(){ const t=new Date(), y0=new Date("2026-01-01"), y1=new Date("2027-01-01");
+  return Math.min(1,Math.max(0,(t-y0)/(y1-y0))); }
+function revTotals(){ return DB.revenue.filter(t=>t.leaf).reduce((a,t)=>({hdtv:a.hdtv+t.hdtv, qt:a.qt+t.qt, bctc:a.bctc+t.bctc, tt:a.tt+t.tt}),{hdtv:0,qt:0,bctc:0,tt:0}); }
+function revRag(tt,kh){ if(!kh) return "b"; const el=yearFrac()||.01, r=tt/kh;
+  return r>=el*0.9?"g":(r>=el*0.5?"a":"r"); }
+let REVCLOSED=new Set();
+function toggleRev(ma){ REVCLOSED.has(ma)?REVCLOSED.delete(ma):REVCLOSED.add(ma); renderRevenue(); }
+function revVisible(t){ const parts=t.ma.split(".");
+  for(let i=1;i<parts.length;i++){ if(REVCLOSED.has(parts.slice(0,i).join("."))) return false; } return true; }
+function renderRevenue(){
+  if(!$("#revkpis")) return;
+  const T=revTotals(), el=yearFrac();
+  const pB=T.hdtv?T.bctc/T.hdtv*100:0, pT=T.hdtv?T.tt/T.hdtv*100:0;
+  const kpi=[
+    {l:"KH HĐTV giao 2026", v:n1(T.hdtv), u:"tỷ", d:"toàn Công ty", rag:"b"},
+    {l:"KH quản trị (phấn đấu)", v:n1(T.qt), u:"tỷ", d:`+${n1(T.qt-T.hdtv)} tỷ so KH giao`, rag:"b"},
+    {l:"TH theo BCTC", v:n2(T.bctc), u:"tỷ", d:`${n1(pB)}% KH HĐTV`, rag:revRag(T.bctc,T.hdtv)},
+    {l:"TH đến nay (cộng dồn)", v:n2(T.tt), u:"tỷ", d:`${n1(pT)}% KH HĐTV`, rag:revRag(T.tt,T.hdtv)},
+    {l:"Thời gian đã trôi", v:n1(el*100), u:"%", d:"của năm 2026", rag:"b"},
+  ];
+  $("#revkpis").innerHTML=kpi.map(k=>`<div class="kpi">
+    <div class="v">${k.v}<span style="font-size:16px;font-weight:700;margin-left:3px">${k.u}</span></div>
+    <div class="l">${k.l}</div>
+    <div style="font-size:11.5px;color:var(--muted);margin-top:4px">${k.d} ${k.rag!=="b"?`<span class="badge ${k.rag}">${k.rag==='r'?'ĐỎ':k.rag==='a'?'VÀNG':'XANH'}</span>`:""}</div>
+  </div>`).join("");
+  // bảng cây
+  const rows=DB.revenue.filter(revVisible);
+  $("#revtable").innerHTML=`<table class="cwtable rvtree"><thead><tr>
+    <th>Dịch vụ</th><th>KH HĐTV</th><th>KH quản trị</th><th>TH BCTC</th><th>TH đến nay</th><th style="text-align:left">% KH HĐTV</th><th style="text-align:left">Ghi chú</th></tr></thead><tbody>`+
+    rows.map(t=>{
+      const pc=t.hdtv?Math.min(t.tt/t.hdtv*100,100):0, rag=revRag(t.tt,t.hdtv);
+      const col=rag==="g"?"#16a34a":rag==="a"?"#E0982A":"#d8584e";
+      const caret=t.leaf?"":`<span class="gcaret" data-rev="${t.ma}">${REVCLOSED.has(t.ma)?"▸":"▾"}</span>`;
+      return `<tr class="${t.leaf?"":"rvparent"}">
+      <td style="padding-left:${8+(t.lvl-1)*16}px">${caret}<span style="color:#94a3b8;font-size:10px;margin-right:4px">${t.ma}</span>${t.t}</td>
+      <td>${n1(t.hdtv)}</td><td class="dim">${n1(t.qt)}</td><td>${n2(t.bctc)}</td><td style="font-weight:800">${n2(t.tt)}</td>
+      <td style="text-align:left;white-space:nowrap"><span class="rvbar"><i style="width:${Math.max(pc,1)}%;background:${col}"></i></span><b style="color:${col}">${n1(t.hdtv?t.tt/t.hdtv*100:0)}%</b></td>
+      <td style="text-align:left;max-width:190px;white-space:normal;font-size:10.5px;color:var(--muted)">${t.note||""}</td></tr>`;
+    }).join("")+`</tbody></table>
+    <p class="chartcap" style="margin-top:8px">Đơn vị: tỷ đồng. <b>KH HĐTV</b> = kế hoạch được HĐTV giao · <b>KH quản trị</b> = kế hoạch phấn đấu nội bộ · <b>TH BCTC</b> = lũy kế theo báo cáo tài chính quý gần nhất · <b>TH đến nay</b> = cộng dồn đến thời điểm cập nhật. Đèn so với nhịp thời gian: đã trôi ${n1(el*100)}% năm.</p>`;
+  $$("#revtable .gcaret[data-rev]").forEach(c=>{ c.onclick=()=>toggleRev(c.dataset.rev); });
+  // khoảng cách tới kế hoạch
+  const gap=T.hdtv-T.tt, mLeft=Math.max(1,Math.round((1-el)*12));
+  $("#revgap").innerHTML=`
+    <div class="pbar"><div class="row"><span>⏱ Thời gian đã trôi</span><b>${n1(el*100)}%</b></div>
+      <div class="track"><i class="act" style="width:${el*100}%;background:#94a3b8"></i></div></div>
+    <div class="pbar" style="margin-top:10px"><div class="row"><span>💹 Doanh thu đã đạt (vs KH HĐTV)</span><b>${n1(pT)}%</b></div>
+      <div class="track"><i class="act" style="width:${Math.max(pT,1)}%;background:${pT>=el*90?'var(--green)':'var(--red)'}"></i></div></div>
+    <div class="alert ${pT<el*50?'red':''}" style="margin-top:14px">
+      <h4>${pT<el*50?'🔴':'🟡'} Còn thiếu ${n1(gap)} tỷ so với KH HĐTV giao</h4>
+      <ul><li>Tương đương bình quân <b>${n1(gap/mLeft)} tỷ/tháng</b> trong ~${mLeft} tháng còn lại.</li>
+      <li>${n1((T.qt-T.tt))} tỷ nếu so với KH quản trị.</li>
+      <li>Danh sách việc bù đắp ở khung bên phải (sheet <b>BuDap</b>) — cập nhật khi HĐTV/Ban GĐ giao thêm giải pháp.</li></ul></div>`;
+  // việc bù đắp
+  $("#revcatchup").innerHTML = DB.catchup.map((c,i)=>`
+    <div class="alert ${c.rag==='r'?'red':''}" style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px">
+      <span style="flex:none;font-weight:900;color:${c.rag==='r'?'var(--red)':c.rag==='a'?'#b45309':'var(--green)'}">${i+1}</span>
+      <div style="font-size:12.5px"><b>${c.t}</b>
+        <div style="color:var(--muted);margin-top:3px">${c.seg} · tác động ~<b style="color:var(--green)">+${n1(c.gain)} tỷ</b> · hạn <b>${c.due}</b>${c.note?` · ${c.note}`:""}</div>
+      </div></div>`).join("") || `<p class="note">Chưa có việc bù đắp nào trong sheet BuDap.</p>`;
+}
+
+/* ============ TRANG KHÁCH (các chỉ số là số giới thiệu minh họa) ============ */
+function renderGuest(){
+  // Điểm dịch vụ tổng hợp — vòng score animate
+  const sc=9.2, R=64, C=2*Math.PI*R;
+  $("#gstScore").innerHTML=`<svg width="176" height="176" viewBox="0 0 176 176">
+    <circle cx="88" cy="88" r="${R}" stroke="rgba(255,255,255,.16)" stroke-width="13" fill="none"/>
+    <circle class="val" cx="88" cy="88" r="${R}" stroke="#39d98a" stroke-width="13" fill="none" stroke-linecap="round"
+      stroke-dasharray="${C}" stroke-dashoffset="${C}" transform="rotate(-90 88 88)"/>
+    <text x="88" y="86" text-anchor="middle" font-size="36" font-weight="900" fill="#fff">9,2</text>
+    <text x="88" y="108" text-anchor="middle" font-size="12.5" fill="#9fd4b3" font-weight="700">/ 10</text>
+  </svg><div class="ringlbl">Điểm dịch vụ tổng hợp</div>`;
+  // setTimeout thay vì rAF: vẫn chạy khi tab/panel bị ẩn (rAF bị throttle)
+  setTimeout(()=>{ const c=document.querySelector("#gstScore circle.val"); if(c) c.style.strokeDashoffset=C*(1-sc/10); }, 60);
+  // Counter chạy số — có chốt giá trị cuối phòng khi rAF không chạy
+  $$("#gstCounters > div").forEach(d=>{
+    const target=+d.dataset.val, suf=d.dataset.suf||"", b=d.querySelector("b");
+    const t0=performance.now(), dur=1300;
+    setTimeout(()=>{ b.textContent=target+suf; }, dur+200);
+    requestAnimationFrame(function tick(t){ const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3);
+      b.textContent=Math.round(target*e)+suf; if(k<1) requestAnimationFrame(tick); });
+  });
+  // Radar 5 trục năng lực
+  const axes=[["An toàn HSE",9.8],["Chất lượng kỹ thuật",9.4],["Hài lòng KH",9.4],["Tiến độ",9.0],["Chi phí",8.7]];
+  const cx=130,cy=112,RR=76;
+  const pt=(i,r)=>{ const a=(-90+i*72)*Math.PI/180; return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; };
+  const ring=k=>`<polygon points="${axes.map((_,i)=>pt(i,RR*k).join(",")).join(" ")}" fill="none" stroke="#e2e8f0"/>`;
+  const spokes=axes.map((_,i)=>{ const [x,y]=pt(i,RR); return `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#eef2f7"/>`; }).join("");
+  const poly=axes.map((a,i)=>pt(i,RR*a[1]/10).join(",")).join(" ");
+  const lbls=axes.map((a,i)=>{ const [x,y]=pt(i,RR+20);
+    return `<text x="${x}" y="${y}" text-anchor="middle" font-size="9.5" fill="#475569" font-weight="700">${a[0]}</text>
+            <text x="${x}" y="${y+11}" text-anchor="middle" font-size="10" fill="var(--green)" font-weight="900">${String(a[1]).replace('.',',')}</text>`; }).join("");
+  $("#gstRadar").innerHTML=`<svg viewBox="0 0 260 230" class="svgc">${ring(1/3)}${ring(2/3)}${ring(1)}${spokes}
+    <polygon points="${poly}" fill="rgba(0,166,81,.22)" stroke="#00a651" stroke-width="2.5" stroke-linejoin="round"/>
+    ${axes.map((a,i)=>{ const [x,y]=pt(i,RR*a[1]/10); return `<circle cx="${x}" cy="${y}" r="3.5" fill="#00a651"/>`; }).join("")}${lbls}</svg>`;
+  // Donut hài lòng 96%
+  const pv=96, r2=56, C2=2*Math.PI*r2;
+  $("#gstDonut").innerHTML=`<svg viewBox="0 0 200 170" class="svgc" style="max-width:230px;margin:0 auto;display:block">
+    <circle cx="100" cy="85" r="${r2}" stroke="#eef2f7" stroke-width="17" fill="none"/>
+    <circle cx="100" cy="85" r="${r2}" stroke="url(#gstg)" stroke-width="17" fill="none" stroke-linecap="round"
+      stroke-dasharray="${C2*pv/100} ${C2}" transform="rotate(-90 100 85)"/>
+    <defs><linearGradient id="gstg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00a651"/><stop offset="1" stop-color="#2bd889"/></linearGradient></defs>
+    <text x="100" y="82" text-anchor="middle" font-size="30" font-weight="900" fill="var(--navy)">96%</text>
+    <text x="100" y="102" text-anchor="middle" font-size="10" fill="#64748b">khách hàng đánh giá tốt trở lên</text>
+  </svg><p class="chartcap" style="text-align:center">Khảo sát dịch vụ thường niên — tỷ lệ sẵn sàng tiếp tục hợp tác 98%.</p>`;
+  // Chỉ số quy mô dịch vụ (2022 = 100)
+  const yrs=[["2022",100],["2023",118],["2024",142],["2025",171],["2026",205]];
+  const W=260,H=185,pd=26, mx=210, bw=26;
+  $("#gstGrowth").innerHTML=`<svg viewBox="0 0 ${W} ${H}" class="svgc">${yrs.map((y,i)=>{
+    const x=pd+(i+0.5)*(W-2*pd)/yrs.length, h=(y[1]/mx)*(H-2*pd-14), yy=H-pd-h;
+    const last=i===yrs.length-1;
+    return `<rect x="${x-bw/2}" y="${yy}" width="${bw}" height="${h}" rx="5" fill="${last?'url(#gstg2)':'#bcd9c6'}"/>
+      <text x="${x}" y="${yy-6}" text-anchor="middle" font-size="10.5" font-weight="900" fill="${last?'var(--green)':'#64748b'}">${y[1]}</text>
+      <text x="${x}" y="${H-pd+13}" text-anchor="middle" font-size="9.5" fill="#64748b" font-weight="${last?'800':'400'}">${y[0]}</text>`;
+  }).join("")}<defs><linearGradient id="gstg2" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#006838"/><stop offset="1" stop-color="#2bd889"/></linearGradient></defs></svg>
+  <p class="chartcap" style="text-align:center">Tăng trưởng bình quân ~20%/năm — động lực từ dịch vụ kỹ thuật &amp; thương mại năng lượng.</p>`;
+}
+
+/* ============ MODAL & KẾ HOẠCH XÓA LỖ (sheet XoaLo) ============ */
+function showModal(html){ $("#modalbox").innerHTML=html; $("#modal").style.display="flex"; }
+function closeModal(){ $("#modal").style.display="none"; }
+function lossYearChart(){
+  // cột lỗ lũy kế còn lại giảm dần: hiện tại → mục tiêu từng năm
+  const pts=[{y:"Nay", v:F.lo_luy_ke}, ...DB.lossyears.map(x=>({y:x.y, v:x.lo_conlai}))];
+  const W=560,H=150,pad=30, mx=Math.max(...pts.map(p=>p.v),1);
+  const bw=(W-2*pad)/pts.length*0.5;
+  return `<div class="svroll"><svg viewBox="0 0 ${W} ${H}" class="svgc">${pts.map((p,i)=>{
+    const x=pad+(i+0.5)*(W-2*pad)/pts.length, h=(p.v/mx)*(H-2*pad-16), y=H-pad-h;
+    const col=i===0?"#d8584e":(p.v===0?"#16a34a":"#E0982A");
+    return `<rect x="${x-bw/2}" y="${y}" width="${bw}" height="${Math.max(h,2)}" rx="4" fill="${col}" opacity=".85"/>
+      <text x="${x}" y="${y-5}" text-anchor="middle" font-size="10" font-weight="800" fill="${col}">${n1(p.v)}</text>
+      <text x="${x}" y="${H-pad+13}" text-anchor="middle" font-size="9.5" fill="#64748b" font-weight="${i===0?'800':'400'}">${p.y}</text>`;
+  }).join("")}<text x="${pad}" y="${pad-10}" font-size="9" fill="#94a3b8">Lỗ lũy kế còn lại (tỷ) — hiện tại và mục tiêu cuối mỗi năm</text></svg></div>`;
+}
+function showLossPlan(){
+  const grp=loai=>DB.lossplan.filter(x=>x.loai===loai).map(x=>`<tr>
+    <td style="text-align:left;white-space:normal">${x.t}</td><td>${x.moc}</td>
+    <td style="text-align:left;white-space:normal">${x.st}</td>
+    <td><span class="badge ${x.rag}">${x.rag==='r'?'ĐỎ':x.rag==='a'?'VÀNG':'XANH'}</span></td></tr>`).join("");
+  const tbl=rows=>`<table class="cwtable" style="margin-bottom:14px"><thead><tr>
+    <th style="text-align:left">Nhiệm vụ</th><th>Mốc</th><th style="text-align:left">Tình hình thực hiện</th><th>Đèn</th></tr></thead><tbody>${rows}</tbody></table>`;
+  const yrRows=DB.lossyears.map(x=>`<tr>
+    <td style="font-weight:800">${x.y}</td><td>${n1(x.dt)}</td><td>${n2(x.ln_hdtv)}</td><td class="dim">${n2(x.ln_qt)}</td>
+    <td style="font-weight:800;color:${x.lo_conlai===0?'var(--green)':'var(--ink)'}">${n1(x.lo_conlai)}</td>
+    <td style="text-align:left;white-space:normal;font-size:11px;color:var(--muted)">${x.th||"—"} ${x.rag!=="b"?`<span class="badge ${x.rag}">${x.rag==='r'?'ĐỎ':x.rag==='a'?'VÀNG':'XANH'}</span>`:""}</td></tr>`).join("");
+  showModal(`<h3>⏳ Kế hoạch xóa lỗ lũy kế đến 2029 — nhiệm vụ &amp; tình hình <button class="mclose" onclick="closeModal()">✕</button></h3>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px">Lỗ lũy kế hiện <b>${n2(F.lo_luy_ke)} tỷ</b> (đầu 2025: 19,15 tỷ). Mục tiêu xử lý dứt điểm năm <b>2029</b> để đủ điều kiện cổ phần hóa từ 2030. Nguồn: sheet <b>XoaLo</b> &amp; <b>XoaLoNam</b>.</p>
+    <div class="cdet-h">📆 Chỉ tiêu doanh thu – lợi nhuận từng năm để xóa lỗ</div>
+    ${lossYearChart()}
+    <table class="cwtable" style="margin-bottom:14px"><thead><tr>
+      <th>Năm</th><th>DT kế hoạch (tỷ)</th><th>LN — KH HĐTV giao</th><th>LN — KH quản trị</th><th>Lỗ còn lại mục tiêu</th><th style="text-align:left">Tình hình</th></tr></thead>
+      <tbody>${yrRows}</tbody></table>
+    <div class="cdet-h">🏛 Nhiệm vụ — Kế hoạch được HĐTV giao</div>${tbl(grp("HĐTV"))}
+    <div class="cdet-h">⚙️ Nhiệm vụ — Kế hoạch quản trị (nội bộ)</div>${tbl(grp("QT"))}`);
+}
+
 /* ============ POWER BI ============ */
 const PBI_DEFAULT="https://app.powerbi.com/view?r=eyJrIjoiZDE0ZGFkYWYtZTY1Yy00YWRlLWI5ZGMtMjExMmE2YzgzOWJkIiwidCI6IjU0OWJjNjQzLTJkZTItNDlkZC1hNjU4LTQ0ZGU1OTYxMWU3MyIsImMiOjEwfQ%3D%3D";
 function renderPBI(){
@@ -1504,6 +1848,10 @@ function renderCockpit(){
   <div class="ck-legend"><b>Đèn:</b> <span><span class="ck-dot g"></span>Đạt</span><span><span class="ck-dot a"></span>Cần chú ý</span><span><span class="ck-dot r"></span>Phải xử lý</span> <span style="margin-left:auto">Cập nhật: ${dt(DB.asof)}</span></div>
   <div class="ck-strip">${K.map(k=>`<div class="ck-kpi ${k.rag}"><div class="ck-lbl">${k.l}</div><div class="ck-val">${k.v}<span style="font-size:20px">${k.u}</span></div><div class="ck-delta ${k.rag}">${k.d}</div></div>`).join("")}</div>
   <div class="ck-grid-2">
+    <div class="ck-card"><h3>💹 Doanh thu đến nay vs Kế hoạch 2026</h3><div class="ck-body" id="ck_rev"></div></div>
+    <div class="ck-card"><h3>🛠️ Để về đích kế hoạch — việc cần triển khai</h3><div class="ck-body" id="ck_catchup"></div></div>
+  </div>
+  <div class="ck-grid-2">
     <div class="ck-card escal"><h3>🗳️ Việc cần Chủ tịch quyết định <span class="ck-cnt">${dec.length} chờ QĐ</span></h3><div class="ck-body">
       ${dec.map((d,i)=>`<div class="ck-act"><div class="ck-n">${i+1}</div><div class="ck-txt">${d.t}<div class="ck-meta">${d.v} · ${d.m}</div></div></div>`).join("")}
       ${DB.decisions.doing.map((d,i)=>`<div class="ck-act"><div class="ck-n" style="background:var(--amber)">▸</div><div class="ck-txt">${d.t}<div class="ck-meta">Đang xử lý · ${d.v}</div></div></div>`).join("")}
@@ -1518,10 +1866,10 @@ function renderCockpit(){
     <div class="ck-card"><h3>🧊 Khoản tiền bị đọng trọng điểm</h3><div class="ck-body">
       ${DB.keydebts.slice(0,4).map(d=>`<div class="ck-barrow"><div class="ck-name">${d.n}</div><div class="ck-track2"><i style="width:${d.v/30*100}%;background:var(--${d.rag==='r'?'red':'amber'})"></i></div><div class="ck-v">${n1(d.v)} tỷ</div></div>`).join("")}
     </div><div class="ck-foot">Tổng ~<b>${n1(28+21.4+30.35+7)} tỷ</b> đang bị đọng, chưa thu hồi được</div></div>
-    <div class="ck-card"><h3>⏳ Mục tiêu 2029</h3><div class="ck-body">
+    <div class="ck-card clickable" onclick="showLossPlan()" title="Bấm để xem kế hoạch xóa lỗ (KH HĐTV giao + KH quản trị)"><h3>⏳ Mục tiêu 2029 <span class="ck-cnt">bấm để xem KH</span></h3><div class="ck-body">
       <div class="ck-budget-total">${n2(F.lo_luy_ke)}<small> tỷ lỗ còn lại</small></div>
       <div class="pbar" style="margin-top:8px"><div class="track"><i class="act" style="width:${Math.max(3,done)}%;background:linear-gradient(90deg,#006838,#00a651)"></i></div></div>
-      <div style="font-size:11.5px;color:var(--muted);margin-top:6px">Đã xử lý ${n1(done)}% lỗ luỹ kế · mục tiêu xóa hết 2029, cổ phần hóa từ 2030.</div>
+      <div style="font-size:11.5px;color:var(--muted);margin-top:6px">Đã xử lý ${n1(done)}% lỗ luỹ kế · mục tiêu xóa hết 2029, cổ phần hóa từ 2030. <b>Bấm thẻ</b> để xem nhiệm vụ HĐTV giao / quản trị &amp; tình hình.</div>
     </div></div>
   </div>
   <div class="ck-grid-2">
@@ -1531,6 +1879,21 @@ function renderCockpit(){
   // mini charts trong cockpit
   renderScurve("#ck_scurve");
   renderCashMini("#ck_cash");
+  renderCkRev();
+}
+function renderCkRev(){
+  const T=revTotals(), el=yearFrac();
+  const pT=T.hdtv?T.tt/T.hdtv*100:0, gap=T.hdtv-T.tt, mLeft=Math.max(1,Math.round((1-el)*12));
+  $("#ck_rev").innerHTML=`
+    <div class="ck-budget-total">${n2(T.tt)}<small> / ${n1(T.hdtv)} tỷ KH HĐTV (${n1(pT)}%)</small></div>
+    <div class="pbar" style="margin-top:8px"><div class="track"><i class="act" style="width:${Math.max(pT,1.5)}%;background:${pT>=el*90?'linear-gradient(90deg,#006838,#00a651)':'var(--red)'}"></i></div></div>
+    <div style="font-size:11.5px;color:var(--muted);margin-top:6px">Đã trôi <b>${n1(el*100)}%</b> năm · KH quản trị ${n1(T.qt)} tỷ · TH theo BCTC ${n2(T.bctc)} tỷ.</div>
+    <div style="font-size:12px;margin-top:6px;color:var(--red);font-weight:700">Còn thiếu ${n1(gap)} tỷ — cần bình quân ~${n1(gap/mLeft)} tỷ/tháng trong ${mLeft} tháng còn lại.</div>
+    <div class="ck-foot" style="margin-top:8px">Chi tiết theo dịch vụ cha–con: tab <b>Doanh thu</b> (chế độ Chuyên viên)</div>`;
+  $("#ck_catchup").innerHTML = DB.catchup.slice(0,4).map((c,i)=>`
+    <div class="ck-act"><div class="ck-n" style="background:${c.rag==='r'?'var(--red)':c.rag==='a'?'var(--amber)':'var(--green)'}">${i+1}</div>
+    <div class="ck-txt">${c.t}<div class="ck-meta">${c.seg} · ~+${n1(c.gain)} tỷ · hạn ${c.due}</div></div></div>`).join("")
+    + (DB.catchup.length>4?`<div class="ck-foot">+ ${DB.catchup.length-4} việc khác — xem tab Doanh thu</div>`:"");
 }
 function renderCashMini(elid){
   const rows=cashSeries(false,false); if(!rows.length){ $(elid).innerHTML=""; return; }
@@ -1556,7 +1919,7 @@ function refreshAll(){
   renderTicker(); renderKPIs(); renderGauge($("#gauge")); renderLoss(); renderDecisions(); renderAlerts(); renderScurve();
   renderCash(); renderGauge($("#gauge2")); renderCashKV(); renderCashStruct();
   renderSankey(); renderAging(); renderKeyDebts();
-  renderPlan(); renderSwim();
+  renderPlan(); renderSwim(); renderRevenue();
   renderBCG(); renderRMatrix(); renderWaterfall(); renderSegBars(); renderCompliance();
   renderPBI();
   if(document.body.classList.contains("ld-mode")) renderCockpit();
@@ -1564,8 +1927,18 @@ function refreshAll(){
 function setRole(r){
   $$("#roleswitch button").forEach(b=>b.classList.toggle("active", b.dataset.role===r));
   document.body.classList.toggle("ld-mode", r==="ld");
+  document.body.classList.toggle("guest-mode", r==="guest");
+  const sub=$("header.top .sub");
+  if(r==="guest"){
+    if(!setRole._sub) setRole._sub=sub.innerHTML;
+    sub.textContent="Hồ sơ năng lực & dịch vụ — bản giới thiệu đối ngoại, không chứa số liệu nội bộ";
+    renderGuest();
+  } else if(setRole._sub){ sub.innerHTML=setRole._sub; }
   if(r==="ld"){ renderCockpit(); } scrollTo(0,0);
 }
+// modal: bấm nền tối hoặc Esc để đóng
+$("#modal").onclick=e=>{ if(e.target.id==="modal") closeModal(); };
+addEventListener("keydown",e=>{ if(e.key==="Escape") closeModal(); });
 $$("#roleswitch button").forEach(b=>b.onclick=()=>setRole(b.dataset.role));
 $$("nav.tabs button").forEach(b=>b.onclick=()=>{
   $$("nav.tabs button").forEach(x=>x.classList.remove("active")); b.classList.add("active");
@@ -1664,6 +2037,27 @@ const applyWorkbook=(wb)=>{
     if(r=rowsOf("RuiRo")){ DB.risks=r.map(x=>({id:num(x[0])||0, n:String(x[1]||""), l:num(x[2])||3, i:num(x[3])||3, k:String(x[4]||"")})); done.push(`Rủi ro (${DB.risks.length})`); }
     if(r=rowsOf("DichVu")){ DB.segments=r.map(x=>({n:String(x[0]||""), rev:num(x[1])||0, margin:num(x[2])||0, growth:num(x[3])||0, gv:num(x[4])||0})); done.push(`Dịch vụ (${DB.segments.length} mảng)`); }
     if(r=rowsOf("TuanThu")){ DB.compliance=r.map(x=>({n:String(x[0]||""), v:String(x[1]||""), rag:String(x[2]||"a").trim().toLowerCase()})); done.push(`Tuân thủ (${DB.compliance.length})`); }
+    if(r=rowsOf("DoanhThu")){
+      DB.revenue=r.map((x,i)=>({ma:String(x[0]||"").trim()||String(i+1), t:String(x[1]||""),
+        hdtv:num(x[2]), qt:num(x[3]), bctc:num(x[4]), tt:num(x[5]), note:String(x[6]||"")}));
+      computeRevRollups(); REVCLOSED=new Set();
+      done.push(`Doanh thu vs KH (${DB.revenue.filter(t=>t.leaf).length} dịch vụ)`);
+    }
+    if(r=rowsOf("BuDap")){
+      DB.catchup=r.map(x=>({t:String(x[0]||""), seg:String(x[1]||""), gain:num(x[2])||0,
+        due:fmtd(x[3])||String(x[3]||""), rag:String(x[4]||"a").trim().toLowerCase(), note:String(x[5]||"")}));
+      done.push(`Việc bù đắp KH (${DB.catchup.length})`);
+    }
+    if(r=rowsOf("XoaLo")){
+      DB.lossplan=r.map(x=>({t:String(x[0]||""), loai:/qt|quản trị|quan tri/i.test(String(x[1]||""))?"QT":"HĐTV",
+        moc:String(x[2]||""), st:String(x[3]||""), rag:String(x[4]||"a").trim().toLowerCase()}));
+      done.push(`Kế hoạch xóa lỗ (${DB.lossplan.length} nhiệm vụ)`);
+    }
+    if(r=rowsOf("XoaLoNam")){
+      DB.lossyears=r.map(x=>({y:String(x[0]||""), dt:num(x[1])||0, ln_hdtv:num(x[2])||0, ln_qt:num(x[3])||0,
+        lo_conlai:num(x[4])||0, th:String(x[5]||""), rag:String(x[6]||"b").trim().toLowerCase()}));
+      done.push(`Lộ trình xóa lỗ theo năm (${DB.lossyears.length} năm)`);
+    }
     return done;
 };
 
@@ -1707,6 +2101,7 @@ $("#updated").textContent="Cập nhật: "+dt(DB.asof);
 const stl=document.createElement("style"); stl.textContent="@keyframes blinkc{0%,100%{outline-color:#dc2626}50%{outline-color:#fca5a5}}"; document.head.appendChild(stl);
 
 computePlanRollups();
+computeRevRollups();
 refreshAll();
 </script>
 </body>
