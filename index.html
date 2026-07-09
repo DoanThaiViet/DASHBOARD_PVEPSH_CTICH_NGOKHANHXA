@@ -421,11 +421,12 @@
   .ticker{background:linear-gradient(90deg,#fef2f2,#fff);border:1px solid var(--line);border-left:4px solid var(--red);border-radius:0 12px 12px 0;box-shadow:var(--shadow);overflow:hidden;display:flex;align-items:center;margin-bottom:16px}
   .ticker .lb{flex:none;background:var(--red);color:#fff;font-size:11px;font-weight:800;padding:8px 12px;letter-spacing:.5px}
   .ticker .track{overflow:hidden;flex:1;white-space:nowrap;height:auto;background:none;border-radius:0;position:static;padding:8px 0}
-  .ticker .move{display:inline-block;padding-left:100%;animation:tick 34s linear infinite;font-size:12.5px;color:var(--ink);font-weight:600}
+  .ticker .move{display:inline-block;padding-left:100%;animation:tick 60s linear infinite;font-size:12.5px;color:var(--ink);font-weight:600}
   .ticker .move span{margin:0 26px}
   .ticker .move b{color:var(--red)}
+  .ticker:hover .move{animation-play-state:paused} /* rê chuột vào để dừng đọc */
   @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-100%)}}
-  @media(pointer:coarse){.ticker .move{animation-duration:24s}}
+  @media(pointer:coarse){.ticker .move{animation-duration:44s}}
   /* Đồng hồ thanh khoản (runway gauge) */
   .gaugewrap{display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center}
   .gaugebig{font-size:15px;color:var(--muted);max-width:340px;line-height:1.55}
@@ -517,6 +518,29 @@
   .modalbox .mclose{border:none;background:#eef2f7;border-radius:8px;width:28px;height:28px;cursor:pointer;font-size:14px;font-weight:800;color:var(--muted);flex:none}
   .clickable{cursor:pointer}
   .clickable:hover{box-shadow:0 6px 20px rgba(20,40,80,.12)}
+  /* ===== Card Doanh thu vs KH (cockpit) — pace/bullet chart ===== */
+  .ckrev-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+  .ckrev-big{font-size:38px;font-weight:900;color:var(--navy);line-height:1;font-variant-numeric:tabular-nums}
+  .ckrev-big small{font-size:12px;color:var(--muted);font-weight:700;margin-left:6px}
+  .ckrev-pill{display:inline-block;font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;background:#fdecea;color:var(--red);margin-top:7px}
+  .ckrev-kh{font-size:11.5px;color:var(--muted);line-height:1.8;text-align:right}
+  .ckrev-kh b{color:var(--ink);font-variant-numeric:tabular-nums}
+  .pace{margin:16px 0 4px}
+  .pace-row{display:grid;grid-template-columns:88px 1fr 54px;gap:9px;align-items:center;margin-bottom:10px;font-size:11.5px;color:var(--muted);font-weight:700}
+  .pace-val{text-align:right;font-weight:900;color:var(--ink);font-variant-numeric:tabular-nums}
+  .pace-tr{position:relative;height:13px;background:#f1f5f9;border-radius:7px}
+  .pace-tr i{position:absolute;left:0;top:0;bottom:0;border-radius:7px;width:0;transition:width .9s cubic-bezier(.22,.8,.3,1);min-width:3px}
+  .pace-mark{position:absolute;top:-5px;bottom:-5px;border-left:2px dashed var(--navy);opacity:.6}
+  .pace-cap{font-size:10.5px;color:var(--muted);margin:-2px 0 10px 97px}
+  .ckrev-svc{display:grid;grid-template-columns:minmax(130px,1.3fr) 1fr 92px;gap:9px;align-items:center;padding:5px 7px;border-radius:8px;cursor:pointer;font-size:11.5px;transition:background .18s}
+  .ckrev-svc:hover{background:#eef4fb}
+  .ckrev-svc .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;color:var(--ink)}
+  .ckrev-svc .tr3{position:relative;height:9px;background:#f1f5f9;border-radius:5px}
+  .ckrev-svc .tr3 i{position:absolute;left:0;top:0;bottom:0;border-radius:5px;width:0;min-width:2px;transition:width .9s cubic-bezier(.22,.8,.3,1)}
+  .ckrev-svc .pc{text-align:right;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .ckrev-svc .pc small{color:var(--muted);font-weight:600}
+  .ckrev-btn{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:11.5px;font-weight:800;color:var(--navy);background:var(--blue-l,#eef4fb);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;transition:background .18s}
+  .ckrev-btn:hover{background:#e0ecfa}
   /* ===== Chế độ Khách ===== */
   body.guest-mode nav.tabs, body.guest-mode section.view, body.guest-mode footer,
   body.guest-mode #updxlsx, body.guest-mode .asof, body.guest-mode #updated{display:none!important}
@@ -548,6 +572,11 @@
   .gst-strip b{font-variant-numeric:tabular-nums}
   .gst-wow{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
   .gst-wow h3{font-size:13px;color:var(--navy);margin-bottom:10px}
+  .gst-wow .gst-card{display:flex;flex-direction:column}
+  .gst-wow .gst-card>div{flex:1;display:flex;flex-direction:column;justify-content:center}
+  .gst-wow svg{height:205px;width:100%}
+  .gst-wow .chartcap{margin-top:auto;padding-top:8px}
+  .gst-strip>div{display:flex;flex-direction:column;justify-content:center;min-height:88px}
   .gst-heritage{margin-bottom:20px}
   .gst-heritage h3{font-size:14px;color:var(--navy);margin-bottom:14px}
   .gst-tl{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
@@ -1755,7 +1784,8 @@ function renderGuest(){
             <text x="${x}" y="${y+11}" text-anchor="middle" font-size="10" fill="var(--green)" font-weight="900">${String(a[1]).replace('.',',')}</text>`; }).join("");
   $("#gstRadar").innerHTML=`<svg viewBox="0 0 260 230" class="svgc">${ring(1/3)}${ring(2/3)}${ring(1)}${spokes}
     <polygon points="${poly}" fill="rgba(0,166,81,.22)" stroke="#00a651" stroke-width="2.5" stroke-linejoin="round"/>
-    ${axes.map((a,i)=>{ const [x,y]=pt(i,RR*a[1]/10); return `<circle cx="${x}" cy="${y}" r="3.5" fill="#00a651"/>`; }).join("")}${lbls}</svg>`;
+    ${axes.map((a,i)=>{ const [x,y]=pt(i,RR*a[1]/10); return `<circle cx="${x}" cy="${y}" r="3.5" fill="#00a651"/>`; }).join("")}${lbls}</svg>
+  <p class="chartcap" style="text-align:center">Tự đánh giá theo 5 tiêu chí quản trị dịch vụ (thang 10).</p>`;
   // Donut hài lòng 96%
   const pv=96, r2=56, C2=2*Math.PI*r2;
   $("#gstDonut").innerHTML=`<svg viewBox="0 0 200 170" class="svgc" style="max-width:230px;margin:0 auto;display:block">
@@ -1881,15 +1911,54 @@ function renderCockpit(){
   renderCashMini("#ck_cash");
   renderCkRev();
 }
+function gotoRevenue(){ setRole('cv'); const b=document.querySelector('nav.tabs button[data-v="revenue"]'); if(b) b.click(); }
 function renderCkRev(){
   const T=revTotals(), el=yearFrac();
   const pT=T.hdtv?T.tt/T.hdtv*100:0, gap=T.hdtv-T.tt, mLeft=Math.max(1,Math.round((1-el)*12));
+  const elp=el*100;
+  const parents=DB.revenue.filter(t=>t.lvl===1);
+  const ragCol=r=>r==="g"?"#16a34a":r==="a"?"#E0982A":"#d8584e";
   $("#ck_rev").innerHTML=`
-    <div class="ck-budget-total">${n2(T.tt)}<small> / ${n1(T.hdtv)} tỷ KH HĐTV (${n1(pT)}%)</small></div>
-    <div class="pbar" style="margin-top:8px"><div class="track"><i class="act" style="width:${Math.max(pT,1.5)}%;background:${pT>=el*90?'linear-gradient(90deg,#006838,#00a651)':'var(--red)'}"></i></div></div>
-    <div style="font-size:11.5px;color:var(--muted);margin-top:6px">Đã trôi <b>${n1(el*100)}%</b> năm · KH quản trị ${n1(T.qt)} tỷ · TH theo BCTC ${n2(T.bctc)} tỷ.</div>
-    <div style="font-size:12px;margin-top:6px;color:var(--red);font-weight:700">Còn thiếu ${n1(gap)} tỷ — cần bình quân ~${n1(gap/mLeft)} tỷ/tháng trong ${mLeft} tháng còn lại.</div>
-    <div class="ck-foot" style="margin-top:8px">Chi tiết theo dịch vụ cha–con: tab <b>Doanh thu</b> (chế độ Chuyên viên)</div>`;
+    <div class="ckrev-head">
+      <div>
+        <div class="ckrev-big">${n2(T.tt)}<small>tỷ đến nay</small></div>
+        <span class="ckrev-pill">chỉ đạt ${n1(pT)}% KH năm</span>
+      </div>
+      <div class="ckrev-kh">KH HĐTV giao <b>${n1(T.hdtv)}</b> tỷ<br>KH quản trị <b>${n1(T.qt)}</b> tỷ<br>TH theo BCTC <b>${n2(T.bctc)}</b> tỷ</div>
+    </div>
+    <div class="pace">
+      <div class="pace-row"><span>⏱ Thời gian</span>
+        <div class="pace-tr" data-tip="Đã trôi ${n1(elp)}% của năm 2026"><i data-w="${elp}" style="background:#94a3b8"></i></div>
+        <span class="pace-val">${n1(elp)}%</span></div>
+      <div class="pace-row"><span>💹 Doanh thu</span>
+        <div class="pace-tr" data-tip="Doanh thu đến nay ${n2(T.tt)} tỷ = ${n1(pT)}% KH HĐTV.<br>Vạch đứt = nhịp thời gian (${n1(elp)}%) — cần chạm vạch mới đúng tiến độ.">
+          <i data-w="${Math.max(pT,0.6)}" style="background:${pT>=elp*0.9?'linear-gradient(90deg,#006838,#00a651)':'#d8584e'}"></i>
+          <span class="pace-mark" style="left:${elp}%"></span>
+        </div>
+        <span class="pace-val" style="color:${pT>=elp*0.9?'var(--green)':'var(--red)'}">${n1(pT)}%</span></div>
+    </div>
+    <div class="pace-cap">Vạch đứt trên thanh Doanh thu = vị trí "đúng nhịp thời gian". Rê chuột vào thanh/dịch vụ để xem chi tiết.</div>
+    ${parents.map((t,i)=>{
+      const pc=t.hdtv?t.tt/t.hdtv*100:0, rag=revRag(t.tt,t.hdtv);
+      return `<div class="ckrev-svc" data-i="${i}">
+        <span class="nm">${t.t}</span>
+        <span class="tr3"><i data-w="${Math.max(pc,0.6)}" style="background:${ragCol(rag)}"></i></span>
+        <span class="pc" style="color:${ragCol(rag)}">${n1(pc)}%<small> · ${n1(t.tt)}/${n1(t.hdtv)}</small></span>
+      </div>`; }).join("")}
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <div style="font-size:11.5px;margin-top:10px;color:var(--red);font-weight:700">Còn thiếu ${n1(gap)} tỷ — cần ~${n1(gap/mLeft)} tỷ/tháng × ${mLeft} tháng.</div>
+      <button class="ckrev-btn" onclick="gotoRevenue()">Mở tab Doanh thu ›</button>
+    </div>`;
+  // animate width (setTimeout — an toàn khi tab/panel ẩn)
+  setTimeout(()=>{ $$("#ck_rev [data-w]").forEach(i=>{ i.style.width=Math.min(+i.dataset.w,100)+"%"; }); }, 60);
+  // tooltip + click từng dịch vụ
+  $$("#ck_rev .pace-tr[data-tip]").forEach(tr=>{ tr.onmousemove=e=>showTip(e,tr.dataset.tip); tr.onmouseleave=hideTip; });
+  $$("#ck_rev .ckrev-svc").forEach(row=>{
+    const t=parents[+row.dataset.i];
+    row.onmousemove=e=>showTip(e,`<b>${t.t}</b><br>KH HĐTV: <b>${n1(t.hdtv)}</b> tỷ · KH quản trị: <b>${n1(t.qt)}</b> tỷ<br>TH theo BCTC: <b>${n2(t.bctc)}</b> tỷ · TH đến nay: <b>${n2(t.tt)}</b> tỷ${t.note?`<br><span style='color:#9fb2c8'>${t.note}</span>`:""}<br><span style='color:#9fb2c8'>Bấm để mở tab Doanh thu</span>`);
+    row.onmouseleave=hideTip;
+    row.onclick=()=>{ hideTip(); gotoRevenue(); };
+  });
   $("#ck_catchup").innerHTML = DB.catchup.slice(0,4).map((c,i)=>`
     <div class="ck-act"><div class="ck-n" style="background:${c.rag==='r'?'var(--red)':c.rag==='a'?'var(--amber)':'var(--green)'}">${i+1}</div>
     <div class="ck-txt">${c.t}<div class="ck-meta">${c.seg} · ~+${n1(c.gain)} tỷ · hạn ${c.due}</div></div></div>`).join("")
