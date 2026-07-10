@@ -93,26 +93,26 @@
   .editst{font-family:inherit;font-size:11.5px;padding:3px 4px;border:1px solid var(--line);border-radius:6px;max-width:150px}
   .ganttwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
   .gantt{min-width:1100px;position:relative}
-  .grow{display:grid;grid-template-columns:300px 1fr;border-bottom:1px solid #f1f5f9;align-items:center}
-  .grow:hover{background:#f8fafc}
+  .grow{display:grid;grid-template-columns:320px 1fr;border-bottom:1px solid #f1f4f8;align-items:center}
+  .grow:hover{background:#f2f6fb}
   .grow.ghead{background:var(--navy);color:#fff;position:sticky;top:0;z-index:5}
   .grow.ghead .glabel{color:#fff;font-weight:700}
-  .grow.pinit{background:#eef4fb}
-  .glabel{padding:7px 10px;font-size:12px;border-right:1px solid var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .grow.pinit{background:#f0f5fb}
+  .glabel{padding:6px 10px;font-size:12px;border-right:1px solid var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .glabel.sub{padding-left:22px;color:var(--muted);font-size:11.5px}
-  .gtrack{position:relative;height:36px}
+  .gdot{display:inline-block;width:9px;height:9px;border-radius:50%;box-shadow:0 0 0 2px #fff;margin-right:6px;vertical-align:middle}
+  .gtrack{position:relative;height:26px}
   .qgrid{position:absolute;inset:0;display:flex}
-  .qcell{flex:1;border-right:1px solid #f1f5f9;font-size:9.5px;color:#cbd5e1;text-align:center;padding-top:3px}
-  .qcell.yr{border-right:1px solid #cbd5e1}
-  /* thanh KẾ HOẠCH (trên) + thanh THỰC HIỆN (dưới) */
-  .gbar{position:absolute;top:5px;height:11px;border-radius:4px;cursor:pointer;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.15)}
-  .gbar.plan{opacity:.42;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.55) 0 3px,transparent 3px 6px)}
-  .gbar .fill{position:absolute;left:0;top:0;bottom:0;background:rgba(0,0,0,.28)}
-  .gbaract{position:absolute;top:19px;height:11px;border-radius:4px;box-shadow:0 1px 2px rgba(0,0,0,.14)}
-  .gbaract .gpct{position:absolute;right:3px;top:50%;transform:translateY(-50%);font-size:8.5px;font-weight:800;color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.35);white-space:nowrap}
-  .gbaract.zero{width:6px!important;background:repeating-linear-gradient(90deg,#cbd5e1 0 2px,transparent 2px 4px)!important;box-shadow:none;border-radius:2px}
-  .gstub{position:absolute;top:19px;height:11px;left:0;border-radius:4px;background:#eef2f7}
-  .gbar.initbar{height:13px;top:11px;background:var(--navy)!important;border-radius:3px}
+  .qcell{flex:1;border-right:1px solid #eef2f7;font-size:9.5px;color:#cbd5e1;text-align:center;padding-top:3px}
+  .qcell.yr{border-right:1px solid #dbe3ee}
+  /* OECD-style: 1 thanh nền (kế hoạch) + phần hoàn thành tô gradient */
+  .gbar{position:absolute;top:7px;height:12px;border-radius:4px;cursor:pointer;background:#c9d6e8;overflow:visible}
+  .gbar.crit{box-shadow:0 0 0 1.6px #d8584e}
+  .gbar .gfill{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:linear-gradient(90deg,#006838,#00a651)}
+  .gbar .gpct{position:absolute;right:5px;top:50%;transform:translateY(-50%);font-size:8.5px;font-weight:800;color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.4);white-space:nowrap}
+  .gbar .gpct.out{right:auto;left:calc(100% + 4px);color:#475569;text-shadow:none;font-weight:700}
+  .gbar.sumbar{height:9px;top:8px;background:#dbe4f0;border-radius:3px}
+  .gbar.sumbar .gfill{background:linear-gradient(90deg,#23286b,#3a53a4)}
   /* cascade đường găng */
   .gantt.cascade .gbar{opacity:.22;transition:opacity .12s}
   .gantt.cascade .gbar.sel{opacity:1;outline:2px solid #2563eb;outline-offset:1px;box-shadow:0 0 0 3px rgba(37,99,235,.25)}
@@ -736,15 +736,17 @@
         <option value="ontrack">🟢 Đúng hạn</option>
       </select>
       <span class="legend" style="margin:0">
-        <span><i style="background:#94a3b8;opacity:.5"></i>Kế hoạch</span>
-        <span><i style="background:#16a34a"></i>Đúng</span>
-        <span><i style="background:#f59e0b"></i>Chậm nhẹ</span>
-        <span><i style="background:#dc2626"></i>Chậm/găng</span>
+        <span><i style="background:#c9d6e8"></i>Kế hoạch (khoảng thời gian)</span>
+        <span><i style="background:linear-gradient(90deg,#006838,#00a651)"></i>% đã hoàn thành</span>
+        <span style="margin-left:8px">Tình trạng:</span>
+        <span><i style="background:#16a34a;border-radius:50%"></i>đúng</span>
+        <span><i style="background:#f59e0b;border-radius:50%"></i>chậm nhẹ</span>
+        <span><i style="background:#dc2626;border-radius:50%"></i>chậm/găng</span>
         <span style="margin-left:6px;color:var(--navy)">🔴 viền đỏ = đường găng</span>
       </span>
     </div>
     <div class="ganttwrap"><div class="gantt" id="gantt-body"></div></div>
-    <p class="note">Mỗi đầu việc: thanh trên (mờ, sọc) = <b>kế hoạch</b>; thanh dưới (đặc) = <b>thực hiện</b> theo % hoàn thành. Việc <b style="color:var(--red)">viền đỏ nhấp nháy</b> nằm trên <b>đường găng</b> — chậm sẽ đẩy lùi cả chuỗi dịch vụ mới (95% doanh thu KH 2026). Lọc theo phòng chủ trì để thấy nút thắt của từng phòng.</p>
+    <p class="note">Mỗi đầu việc là <b>một thanh</b>: nền xám xanh = <b>khoảng thời gian kế hoạch</b>; phần tô <b>xanh lá</b> = <b>% đã hoàn thành</b>. Chấm tròn đầu dòng = <b>tình trạng</b> (🟢 đúng · 🟡 chậm nhẹ · 🔴 chậm). Việc <b style="color:var(--red)">viền đỏ</b> nằm trên <b>đường găng</b> — chậm sẽ đẩy lùi cả chuỗi dịch vụ mới (95% doanh thu KH 2026). Bấm ▾ để thu gọn nhóm; lọc theo phòng chủ trì để thấy nút thắt của từng phòng.</p>
     <div class="card" style="margin-top:18px">
       <div class="ctitle">🏊 Swimlane theo phòng chủ trì <small>· khối lượng &amp; nút thắt từng phòng</small></div>
       <div class="swim"><div class="swiminner" id="swim"></div></div>
@@ -1518,19 +1520,19 @@ function renderPlan(){
   let head=`<div class="grow ghead"><div class="glabel">Đầu việc · phòng chủ trì <small style="font-weight:400;opacity:.75">(bấm ▾ để thu gọn nhóm)</small></div><div class="gtrack"><div class="qgrid">${["Q1","Q2","Q3","Q4"].map(q=>`<div class="qcell yr">${q}/2026</div>`).join("")}</div></div></div>`;
   let body=rows.map((t,ri)=>{
     const x1=t.s*100, w=(t.e-t.s)*100;
-    const actW=w*t.p/100;
     const col=ganttColor(t.p,t.crit);
-    const crit=t.crit?'style="outline:2px solid #dc2626;outline-offset:1px;animation:'+(t.p<50?'blinkc 1.4s infinite':'none')+'"':'';
+    const dc=deptColor(t.d);
+    const critCls=t.crit?' crit':'';
     const indent=(t.lvl-1)*15;
     const caret=t.leaf?`<span class="gcaret" style="opacity:.25">·</span>`
       :`<span class="gcaret" data-ma="${t.ma}">${PLANCLOSED.has(t.ma)?"▸":"▾"}</span>`;
-    const tiny = t.p===0 || actW<9; // thanh quá hẹp → đưa nhãn % ra ngoài, tránh chữ bị cắt
+    const wide = w>8 && t.p>6; // thanh đủ rộng → hiện % bên trong, ngược lại đưa ra ngoài
     const bar = t.leaf
-      ? `<div class="gbar plan" style="left:${x1}%;width:${w}%;background:${deptColor(t.d)}" ${crit}></div>
-         <div class="gbaract ${t.p===0?'zero':''}" style="left:${x1}%;width:${t.p===0?'6px':actW+'%'};background:${col}"><span class="gpct${tiny?' out':''}">${t.p}%</span></div>`
-      : `<div class="gbar gparent" style="left:${x1}%;width:${w}%;border:2px solid ${deptColor(t.d)};overflow:visible" ${crit}><i style="width:${t.p}%;background:${deptColor(t.d)}"></i><span class="gpct" style="color:${deptColor(t.d)};font-weight:800">${t.p}%</span></div>`;
+      ? `<div class="gbar leaf${critCls}" style="left:${x1}%;width:${w}%"><div class="gfill" style="width:${t.p}%"></div><span class="gpct${wide?'':' out'}">${t.p}%</span></div>`
+      : `<div class="gbar sumbar${critCls}" style="left:${x1}%;width:${w}%"><div class="gfill" style="width:${t.p}%"></div><span class="gpct out">${t.p}%</span></div>`;
+    const dot = `<span class="gdot" style="background:${t.leaf?col:dc}"></span>`;
     return `<div class="grow${t.leaf?"":" pinit"}" title="${t.ma} · ${t.t}">
-      <div class="glabel${t.leaf?"":" gparentlbl"}" style="padding-left:${10+indent}px">${caret}<span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${deptColor(t.d)};margin-right:6px"></span><span style="color:#94a3b8;font-size:10px;margin-right:4px">${t.ma}</span>${t.t} <b style="color:${deptColor(t.d)};font-size:10px">[${t.d}]</b></div>
+      <div class="glabel${t.leaf?"":" gparentlbl"}" style="padding-left:${10+indent}px">${caret}${dot}<span style="color:#94a3b8;font-size:10px;margin-right:4px">${t.ma}</span>${t.t} <b style="color:${dc};font-size:10px">[${t.d}]</b></div>
       <div class="gtrack"><div class="qgrid">${[0,1,2,3].map(()=>`<div class="qcell yr"></div>`).join("")}</div>
         <div class="todayline${ri===0?' lbl':''}" style="left:${asofFrac*100}%"></div>
         ${bar}
